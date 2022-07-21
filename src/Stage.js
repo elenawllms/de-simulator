@@ -12,7 +12,7 @@ export default function Stage() {
   const style = {
     width: STAGE_DIMENSIONS.width + 'px',
     height: STAGE_DIMENSIONS.height + 'px',
-    'min-width': STAGE_DIMENSIONS.width + 'px'
+    minWidth: STAGE_DIMENSIONS.width + 'px'
   };
 
 
