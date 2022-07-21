@@ -1,7 +1,9 @@
 import React from 'react';
 
-export default function NavBar() {
+export default function NavBar(props) {
   return (
-    <div className="NavBar">NavBar</div>
+    <div className="NavBar">
+      <button onClick={props.switchTheme}>Switch to {props.theme === 'light' ? "Dark" : "Light"} Mode</button>
+    </div>
   )
 }
