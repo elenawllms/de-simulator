@@ -1,8 +1,10 @@
 import './App.css';
-import NavBar from './NavBar.js';
-import Stage from './Stage.js';
+import {Pendulum, Spring} from './simulations/index.js';
 import {HEADING_SIZE} from './constants.js';
 import {createContext, useState, useEffect} from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Main from './Main.js';
+
 
 export const ThemeContext = createContext(null);
 
@@ -28,10 +30,14 @@ function App() {
 
   return (
     <div id="App" style={style} data-theme={theme}>
-      <NavBar switchTheme={switchTheme} theme={theme}/>
-      <div id="stage-wrapper">
-        <Stage />
-      </div>
+      <BrowserRouter>
+        <Routes>
+        <Route path="/" element={<Main switchTheme={switchTheme} theme={theme} />} />
+          <Route path="/pendulum" element={<Pendulum switchTheme={switchTheme} theme={theme} />} />
+          <Route path="/spring" element={<Spring switchTheme={switchTheme} theme={theme} />} />
+        </Routes>
+      </BrowserRouter>
+      
       
     </div>
   );
