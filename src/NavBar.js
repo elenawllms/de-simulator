@@ -12,7 +12,7 @@ export default function NavBar(props) {
         </button>
       </div>
       
-      <span id="title-text">Pendulum</span>
+      <span id="title-text">{props.title}</span>
       <div id="navbar-right">
         <button onClick={() => {console.log("info")}} id="info-button">
         <svg xmlns="http://www.w3.org/2000/svg" className="bi bi-info-circle" viewBox="0 0 16 16">

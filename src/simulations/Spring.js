@@ -1,7 +1,8 @@
 import React from 'react';
 import NavBar from '../NavBar.js';
-import { STAGE_DIMENSIONS } from '../constants.js';
 import {Energy, Options, Readout, StateSpace, Visualization} from '../cards/index.js';
+import {SpringData as data} from './simulation_data/SpringData.js';
+
 
 export default function Spring(props) {
 
@@ -14,7 +15,7 @@ export default function Spring(props) {
 
   return (
     <>
-        <NavBar switchTheme={props.switchTheme} theme={props.theme}/>
+        <NavBar switchTheme={props.switchTheme} theme={props.theme} title={data.title}/>
         <div id="stage-wrapper">
           <div className="Stage" style={style}>
             <Visualization/>
