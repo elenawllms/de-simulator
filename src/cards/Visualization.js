@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function Pendulum() {
+export default function Visualization() {
+
   return (
-    <div id="Pendulum">
-      Pendulum
+    <div id="Visualization">Visualization
     </div>
   )
 }

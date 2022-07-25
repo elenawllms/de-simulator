@@ -19,7 +19,7 @@ export default function Pendulum(props) {
         <div id="stage-wrapper">
           <div className="Stage" style={style}>
             <Visualization/>
-            <StateSpace/>
+            <StateSpace grid={data.grid}/>
             <Energy/>
             <Options/>
             <Readout/>

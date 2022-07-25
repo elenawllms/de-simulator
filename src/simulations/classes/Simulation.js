@@ -1,6 +1,7 @@
 class Simulation {
-    constructor(title) {
+    constructor(title, grid) {
         this.title = title;
+        this.grid = grid;
     }
 }
 
