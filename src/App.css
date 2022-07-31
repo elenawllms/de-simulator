@@ -93,6 +93,9 @@
   /* box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px; */
   background: var(--card-color);
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #Energy {
@@ -118,5 +121,10 @@
 #StateSpace {
   grid-column: 3/5;
   grid-row: 1/4;
+}
+
+#StateSpace>canvas {
+  width: 200px;
+  height: 200px;
 }
 
