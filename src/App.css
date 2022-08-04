@@ -2,6 +2,8 @@
   --background-color: rgb(215, 213, 221);
   --card-color: #E1E0E3;
   --text-color: #000;
+  --theme-color-1: 4, 122, 255;
+  --theme-color-1-dark: 0, 42, 87;
   --transition: 0.5s ease;
 }
 
@@ -13,6 +15,8 @@
   --background-color: #15141E;
   --card-color: #1F1E27;
   --text-color: #eee;
+  --theme-color-1: 0, 88, 181;
+  --theme-color-1-dark: 0, 29, 61;
 
 }
 
@@ -88,7 +92,7 @@
 
 .Stage {
   display: grid;
-  gap: 20px;
+  gap: 100px;
   grid-template-columns: repeat(5, 1fr);
 }
 
@@ -155,15 +159,55 @@
   height: 450px;
 }
 
-#pauseOrPlay, #reset {
+.controlButton {
   position: fixed;
-  bottom: 20px;
+  bottom: 30px;
 }
 
-#pauseOrPlay {
-  right: 20px;
+#pauseOrPlay {left: 30px;}
+
+
+#reset {right: 30px;}
+
+
+.material-symbols-rounded {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 500,
+  'GRAD' 0,
+  'opsz' 48
 }
 
-#reset {
-  left: 20px;
+.controlButton {
+  height: 50px;
+  width: 50px;
+  background: var(--card-color);
+  border: none;
+  cursor: pointer;
+  box-shadow: rgb(0, 0, 0) 0px 20px 30px -10px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+  justify-content: center;
+  color: var(--text-color);
+}
+
+.controlButton:hover {
+  background-color: rgb(var(--theme-color-1));
+  box-shadow: rgb(var(--theme-color-1-dark)) 0px 10px 15px -5px;
+  color: white;
+}
+
+
+.controlButton svg {
+  height: 40px;
+  width: 40px;
+  fill: #333;
+}
+
+.controlButton svg:hover {
+  fill: rgb(var(--theme-color-1));
+
 }

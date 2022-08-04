@@ -37,11 +37,18 @@ export default function Pendulum(props) {
     minWidth: STAGE_DIMENSIONS.width + 'px'
   };
 
+ 
+
   return (
     <>
+      
+        
         <NavBar switchTheme={props.switchTheme} theme={props.theme} title={data.title}/>
-        <button id="pauseOrPlay" onClick={pauseOrPlay}>Pause/Play</button>
-        <button id="reset" onClick={resetTime}>t = 0</button>
+        <button className="controlButton" id="pauseOrPlay" onClick={pauseOrPlay}>
+          {clock ? <span className="material-symbols-rounded">pause</span> 
+          : <span className="material-symbols-rounded">play_arrow</span> }
+        </button>
+        <button className="controlButton" id="reset" onClick={resetTime}>{<span className="material-symbols-rounded">replay</span>}</button>
         <div id="stage-wrapper">
           <div className="Stage" style={style}>
             <Visualization state={pendState}/>
