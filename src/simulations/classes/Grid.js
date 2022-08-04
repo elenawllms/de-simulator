@@ -103,10 +103,10 @@ export default class Grid {
         });
     }
 
-    drawPoint(ctx, time) {
+    drawPoint(ctx, theta, omega) {
 
-        const xCoord = convertLimits(2 * Math.cos(time / 50), this.limits.x, this.gridLimits.x);
-        const yCoord = convertLimits(2 * Math.sin(time / 50), this.limits.y, this.gridLimits.y);
+        const xCoord = convertLimits(theta, this.limits.x, this.gridLimits.x);
+        const yCoord = convertLimits(omega, this.limits.y, this.gridLimits.y);
 
         ctx.beginPath();
         ctx.arc(xCoord, yCoord, 20, 0, 2 * Math.PI);
@@ -114,12 +114,12 @@ export default class Grid {
         ctx.fill();
     }
 
-    draw(ctx, time) {
+    draw(ctx, theta, omega) {
         // ctx.fillStyle = 'hsl('+ (time * 5) +',50%,70%)';
         // ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         this.drawGridLines(ctx);
-        this.drawPoint(ctx, time);
+        this.drawPoint(ctx, theta, omega);
     }
 }
 

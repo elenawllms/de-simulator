@@ -1,18 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import NavBar from '../NavBar.js';
 import { STAGE_DIMENSIONS } from '../constants.js';
-import {Energy, Options, Readout, StateSpace, Visualization} from '../cards/index.js';
+import Panel from '../Panel.js';
+import Visualization from '../cards/Visualization.js';
 import {PendulumData as data} from './simulation_data/PendulumData.js';
 
 
 export default function Pendulum(props) {
 
-  const [time, setTime] = useState(0);
+  const [pendState, setPendState] = useState({time: 0, theta: 3, omega: 5, damping: 0.2, length: 10});
   const [clock, setClock] = useState(0);
 
   const play = () => {
     const intervalId = setInterval(() => {
-      setTime(prevTime => prevTime + 1);
+      setPendState(state => data.update(state));
     }, 10);
     setClock(intervalId);
   }
@@ -26,6 +27,9 @@ export default function Pendulum(props) {
       setClock(0);
     } else {play();}
   }
+  const resetTime = () => {
+    pendState.time = 0;
+  }
 
   const style = {
     width: STAGE_DIMENSIONS.width + 'px',
@@ -36,15 +40,12 @@ export default function Pendulum(props) {
   return (
     <>
         <NavBar switchTheme={props.switchTheme} theme={props.theme} title={data.title}/>
-        <button onClick={pauseOrPlay}>Pause/Play</button>
-        <button onClick={() => setTime(0)}>t = 0</button>
+        <button id="pauseOrPlay" onClick={pauseOrPlay}>Pause/Play</button>
+        <button id="reset" onClick={resetTime}>t = 0</button>
         <div id="stage-wrapper">
           <div className="Stage" style={style}>
-            <Visualization time={time}/>
-            <StateSpace grid={data.grid} time={time}/>
-            <Energy/>
-            <Options/>
-            <Readout/>
+            <Visualization state={pendState}/>
+            <Panel data={data} state={pendState}/>
           </div>
         </div>
     </>

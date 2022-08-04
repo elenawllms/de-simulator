@@ -5,15 +5,16 @@ export default function StateSpace(props) {
 
   const grid = props.grid;
 
+  const state = props.state;
 
   useEffect(() => {
     const c = canvasRef.current;
     c.width = grid.canvasSize.x;
     c.height = grid.canvasSize.y;
     const ctx = c.getContext('2d');
-    grid.draw(ctx, props.time);
+    grid.draw(ctx, state.theta, state.omega, state.time);
     // eslint-disable-next-line
-  }, [props.time])
+  }, [state.time])
 
 
   return (
