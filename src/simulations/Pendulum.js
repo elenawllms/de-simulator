@@ -27,7 +27,7 @@ export default function Pendulum(props) {
       setClock(0);
     } else {play();}
   }
-  const resetTime = () => {
+  const reset = () => {
     pendState.time = 0;
   }
 
@@ -48,7 +48,7 @@ export default function Pendulum(props) {
           {clock ? <span className="material-symbols-rounded">pause</span> 
           : <span className="material-symbols-rounded">play_arrow</span> }
         </button>
-        <button className="controlButton" id="reset" onClick={resetTime}>{<span className="material-symbols-rounded">replay</span>}</button>
+        <button className="controlButton" id="reset" onClick={reset}>{<span className="material-symbols-rounded">replay</span>}</button>
         <div id="stage-wrapper">
           <div className="Stage" style={style}>
             <Visualization state={pendState}/>

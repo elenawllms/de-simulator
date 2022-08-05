@@ -11,14 +11,14 @@ export default function Panel(props) {
   const [activeTab, setActiveTab] = useState('State Space');
 
   const tabNames = [
-    'State Space', 'Options', 'Energy Diagram', 'Time Series'
+    'State Space', 'Options', 'Energy Diagram', 'Time Series', 'Info'
   ]  
 
   const tabs = [
     <StateSpace key='State Space' label='State Space' grid={props.data.grid} state={props.state}/>,
     <Options key='Options' label='Options'/>,
-    <Energy key='Energy Diagram' label='Energy Diagram'/>,
-    <Readout key='Time Series' label='Time Series'/>
+    <Energy key='Energy Diagram' label='Energy Diagram' state={props.state}/>,
+    <Readout key='Time Series' label='Time Series' state={props.state}/>
   ]
 
   return (
