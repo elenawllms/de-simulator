@@ -1,23 +1,15 @@
-import React, {useState} from 'react'
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-
-import Slider from '@mui/material/Slider';
-import MuiInput from '@mui/material/Input';
-import Grid from '@mui/material/Grid';
-
-
-const Input = styled(MuiInput)`
-  width: 70px;
-`;
+import React, {useState, useEffect} from 'react'
 
 
 export default function Option(props) {
 
-    const [value, setValue] = useState(props.option.default);
+    const [value, setValue] = useState(props.option.value);
+    
+    // eslint-disable-next-line
+    useEffect(() => {props.option.update(value)}, [value]);
 
-    const handleChange = (e, newValue) => {
-        setValue(newValue);
+    const handleChange = (e) => {
+        setValue(e.target.value);
     };
 
     const handleInputChange = (e, newValue) => {
@@ -33,33 +25,23 @@ export default function Option(props) {
     };
 
     return (
-        <div>{props.option.name}: 
-        <Box sx={{width: 250}}>
-            <Grid container spacing={2} alignItems="center">
-                
-                <Grid item xs><Slider 
-                    value={value} 
-                    onChange={handleChange}
-                    min={props.option.min} 
-                    max={props.option.max}
-                    step={0.01}
-
-                /></Grid>
-                <Grid item><Input
+        <div className="option">
+            <p id="input-slider">
+                {props.option.name}: <input type="number"
                     value={value}
                     size="small"
                     onChange={handleInputChange}
                     onBlur={handleBlur}
-                    inputProps={{
-                        step: 0.01,
-                        min: props.option.mins,
-                        max: props.option.max,
-                        type: 'number',
-                        'aria-labelledby': 'input-slider',
-                    }}
-                /></Grid>
-            </Grid>
-            </Box>
+                />
+            </p>
+
+            <input type="range"
+            value={value} 
+            onChange={handleChange}
+            min={props.option.min} 
+            max={props.option.max}
+            step={0.01}/>
+            
         </div>
     )
 }

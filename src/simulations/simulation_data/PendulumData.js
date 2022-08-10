@@ -1,5 +1,6 @@
 import Simulation from '../classes/Simulation.js';
 import Grid from '../classes/Grid.js';
+import { rk4 } from '../../constants.js';
 
 const NewGrid = new Grid(
     {x: {lower: -3.14, upper: 3.14}, y: {lower: -3.14, upper: 3.14}}, 
@@ -13,46 +14,32 @@ const h = 0.03;
 const des = {theta: (state) => state.omega, 
              omega: (state) => (-9.8 * Math.sin(state.theta) / state.length) - (state.damping * state.omega)};
 
-const update = (state) => {
-    // RK4 Update
-
-    // k1 and k2
-    const theta_k = [state.omega];
-    const omega_k = [des.omega(state)];
-    const state_k2 = {time: state.time + h/2, theta: state.theta + h * theta_k[0]/2, 
-                omega: state.omega + h * omega_k[0]/2, damping: state.damping, length: state.length};
-    theta_k.push(des.theta(state_k2));
-    omega_k.push(des.omega(state_k2));
-
-    // k3
-    const state_k3 = {time: state.time + h/2, theta: state.theta + h * theta_k[1]/2, 
-                omega: state.omega + h * omega_k[1]/2, damping: state.damping, length: state.length};
-    theta_k.push(des.theta(state_k3));
-    omega_k.push(des.omega(state_k3));
-
-    // k4
-    const state_k4 = {time: state.time + h, theta: state.theta + h * theta_k[2]/2, 
-                omega: state.omega + h * omega_k[2], damping: state.damping, length: state.length};
-    theta_k.push(des.theta(state_k4));
-    omega_k.push(des.omega(state_k4));
-
-    const newState = {time: state.time + h, theta: state.theta + h * (theta_k[0] + 2*theta_k[1] + 2*theta_k[2] + theta_k[3])/6,
-                      omega: state.omega + h * (omega_k[0] + 2*omega_k[1] + 2*omega_k[2] + omega_k[3])/6,
-                      damping: state.damping, length: state.length};
-
-    newState.theta = (newState.theta < -Math.PI) ? newState.theta + 2 * Math.PI :
-                     (newState.theta > Math.PI) ? newState.theta - 2 * Math.PI : newState.theta;
 
 
-    return newState;
-    
-}
+const update = (state) => (rk4(state, des, ["theta", "omega"], h));
+
+const updateFromOptions = state => ({
+    initialTheta: (value) => {console.log(value); state.initialTheta = parseFloat(value);},
+    initialOmega: (value) => {state.initialOmega = parseFloat(value);},
+    damping: (value) => {state.damping = parseFloat(value)},
+    length: (value) => {state.length = parseFloat(value)}
+});
+
+const optionRanges = state => [
+    {name: 'Initial Angle', min: -3.14, max: 3.14, units: 'rad', update: updateFromOptions(state).initialTheta, value: state.initialTheta},
+    {name: 'Initial Velocity', min: -3.14, max: 3.14, units: 'rad/s', update: updateFromOptions(state).initialOmega, value: state.initialOmega},
+    {name: 'Damping Constant', min: 0, max: 2, units: 'kg/s', update: updateFromOptions(state).damping, value: state.damping},
+    {name: 'Length', min: 3, max: 10, units: 'm', update: updateFromOptions(state).length, value: state.length}
+];
 
 export const PendulumData = new Simulation(
     "Pendulum",
     update,
-    NewGrid
+    NewGrid,
+    updateFromOptions,
+    optionRanges
 );
+
 
 
 

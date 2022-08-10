@@ -33,12 +33,12 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: calc(100vh - var(--heading-size));
+  height: calc(100vh - 50px);
 }
 
 .NavBar {
   background: var(--card-color);
-  height: var(--heading-size);
+  height: 50px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -167,6 +167,17 @@
   justify-content: center;  
 }
 
+.option {
+  /* border: 1px solid red; */
+  width: 250px;
+  padding: 5px;
+  margin: 10px;
+}
+
+.option Grid {
+  background: red;
+}
+
 
 #StateSpace>canvas {
   width: 450px;
@@ -179,10 +190,7 @@
 }
 
 #pauseOrPlay {left: 30px;}
-
-
 #reset {right: 30px;}
-
 
 .material-symbols-rounded {
   font-variation-settings:

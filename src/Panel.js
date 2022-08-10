@@ -16,7 +16,7 @@ export default function Panel(props) {
 
   const tabs = [
     <StateSpace key='State Space' label='State Space' grid={props.data.grid} state={props.state}/>,
-    <Options key='Options' label='Options'/>,
+    <Options key='Options' label='Options' state={props.state} data={props.data}/>,
     <Energy key='Energy Diagram' label='Energy Diagram' state={props.state}/>,
     <Readout key='Time Series' label='Time Series' state={props.state}/>
   ]

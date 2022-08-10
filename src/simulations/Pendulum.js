@@ -8,12 +8,12 @@ import {PendulumData as data} from './simulation_data/PendulumData.js';
 
 export default function Pendulum(props) {
 
-  const [pendState, setPendState] = useState({time: 0, theta: 3, omega: 5, damping: 0.2, length: 10});
+  const [pendState, setPendState] = useState({time: 0, initialTheta: 1, initialOmega: 1, theta: 1, omega: 1, damping: 0.2, length: 10});
   const [clock, setClock] = useState(0);
 
   const play = () => {
     const intervalId = setInterval(() => {
-      setPendState(state => data.update(state));
+      setPendState(state => ({...data.update(state)}));
     }, 10);
     setClock(intervalId);
   }
@@ -29,6 +29,10 @@ export default function Pendulum(props) {
   }
   const reset = () => {
     pendState.time = 0;
+    console.log(pendState.initialTheta);
+    // pendState.theta = pendState.initialTheta;
+    // pendState.omega = pendState.initialOmega;
+    // data.updateFromOptions.theta();
   }
 
   const style = {
@@ -51,7 +55,7 @@ export default function Pendulum(props) {
         <button className="controlButton" id="reset" onClick={reset}>{<span className="material-symbols-rounded">replay</span>}</button>
         <div id="stage-wrapper">
           <div className="Stage" style={style}>
-            <Visualization state={pendState}/>
+            <Visualization key="pendVis" state={pendState}/>
             <Panel data={data} state={pendState}/>
           </div>
         </div>
