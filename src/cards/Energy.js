@@ -1,7 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-export default function Energy() {
+
+export default function Energy(props) {
+
   return (
-    <div id="Energy">Energy</div>
+    <div id="Energy">
+      <div id="energy-plot" style={{height: 500, width: 500}}></div>
+    </div>
   )
 }

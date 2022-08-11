@@ -1,14 +1,16 @@
 import Simulation from '../classes/Simulation.js';
 import Grid from '../classes/Grid.js';
 import { rk4, drawLine, CANVAS_RES_FACTOR} from '../../constants.js';
+var Latex = require('react-latex');
 
+const gridProperties = {
+    limits: {x: {lower: -3.14, upper: 3.14}, y: {lower: -10, upper: 10}},
+    ticks: {x: {major: 1, minor: 2}, y: {major: 3, minor: 2}},
+    origin: {x: 0, y: 0},
+    canvasSize: {x: 500, y: 500, padding: 60}
+}
 
-const NewGrid = new Grid(
-    {x: {lower: -3.14, upper: 3.14}, y: {lower: -10, upper: 10}}, 
-    {x: {major: 1, minor: 2}, y: {major: 3, minor: 2}}, 
-    {x: 0, y: 0},
-    {x: 450, y: 450, padding: 30},
-);
+const grid = new Grid(gridProperties);
 
 const optionRanges = state => [
     {name: 'Initial Angle', min: -3.14, max: 3.14, units: 'rad', update: updateFromOptions(state).initialTheta, value: state.initialTheta},
@@ -103,13 +105,39 @@ const updateFromOptions = state => ({
     length: (value) => {state.length = parseFloat(value)}
 });
 
+const info = <>
+    <h1>Pendulum</h1>
+    This simulation models a pendulum, allowing for control of initial conditions, pendulum length, and damping.
+    The pendulum obeys the formula
+    <Latex displayMode={true}>
+        $ \theta '' + c\theta ' + \lambda\theta = F_0 \cos \Omega t $
+    </Latex>
+    We approximate the pendulum using 
+    the <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods">Runge-Kutta</a> 4th order method.
+</>;
+
+
+const handleStateSpaceClick = (state, x, y) => {
+    state.theta = x;
+    state.omega = y;
+}
+
+const energy = (theta, omega, length) => (
+    0.5 * Math.pow(omega, 2) + 9.8 * Math.cos(theta) / length
+)
+    
+
 export const PendulumData = new Simulation(
     "Pendulum",
     update,
-    NewGrid,
+    grid,
     updateFromOptions,
     optionRanges,
-    drawVisualization
+    drawVisualization,
+    info,
+    energy,
+    gridProperties,
+    handleStateSpaceClick
 );
 
 

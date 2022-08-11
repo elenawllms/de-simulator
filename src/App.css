@@ -111,12 +111,14 @@
 }
 
 #StateSpace>canvas {
-  width: 450px;
-  height: 450px;
+  width: 500px;
+  height: 500px;
+  cursor: pointer;
+  /* border: 1px solid red; */
 }
 
 
-#Visualization {
+#Visualization, #Energy {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -370,4 +372,18 @@ input[type=range]:focus::-ms-fill-upper {
 
 .controlButton svg:hover {
   fill: rgb(var(--theme-color-1));
+}
+
+
+/* INFO TAB */
+
+#Info {
+  padding: 30px 20px;
+  overflow: scroll;
+  text-align: left;
+}
+
+#Info h1 {
+  font-weight: inherit;
+  margin: 10px 0;
 }

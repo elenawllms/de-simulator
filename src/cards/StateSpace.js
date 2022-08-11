@@ -12,7 +12,8 @@ export default function StateSpace(props) {
     c.width = grid.canvasSize.x;
     c.height = grid.canvasSize.y;
     const ctx = c.getContext('2d');
-    grid.draw(ctx, state.theta, state.omega, state.time);
+    c.addEventListener("mousedown", function(e) {grid.handleClick(e, c, props.setState);});
+    grid.draw(ctx, state, props.pastStates, {x: 'theta', y: 'omega'});
     // eslint-disable-next-line
   }, [state.time])
 

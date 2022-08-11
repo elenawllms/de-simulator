@@ -18,7 +18,17 @@ export default function Pendulum(props) {
   const [pendState, setPendState] = useState(
     {time: 0, initialTheta: 3, initialOmega: 3, theta: 3, omega: 3, damping: 0.2, length: 1.5}
     );
+  // eslint-disable-next-line
+  const [pastStates, setPastStates] = useState([]);
   const [clock, setClock] = useState(0);
+
+  useEffect(() => {
+    pastStates.push(pendState);
+    // if (pastStates.length > 50) {
+    //   pastStates.shift();
+    // }
+    // eslint-disable-next-line
+  }, [pendState]);
 
   // update the pendulum's state regularly based on a window interval
   const play = () => {
@@ -45,6 +55,7 @@ export default function Pendulum(props) {
     pendState.theta = pendState.initialTheta;
     pendState.omega = pendState.initialOmega;
     setPendState(state => ({...state}));
+    setPastStates([]);
   }
  
 
@@ -60,7 +71,7 @@ export default function Pendulum(props) {
         <div id="stage-wrapper">
           <div className="Stage">
             <Visualization drawVisualization={data.drawVisualization} state={pendState}/>
-            <Panel data={data} state={pendState}/>
+            <Panel data={data} state={pendState} setState={setPendState} pastStates={pastStates}/>
           </div>
         </div>
     </>

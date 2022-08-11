@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import {Energy, Options, Readout, StateSpace} from './cards/index.js';
+import {Energy, Options, Readout, StateSpace, Info} from './cards/index.js';
 
 
 
@@ -15,10 +15,17 @@ export default function Panel(props) {
   ]  
 
   const tabs = [
-    <StateSpace key='State Space' label='State Space' grid={props.data.grid} state={props.state}/>,
+    <StateSpace 
+      key='State Space' 
+      label='State Space' 
+      grid={props.data.grid} 
+      setState={props.setState} 
+      state={props.state}
+      pastStates={props.pastStates}/>,
     <Options key='Options' label='Options' state={props.state} data={props.data}/>,
-    <Energy key='Energy Diagram' label='Energy Diagram' state={props.state}/>,
-    <Readout key='Time Series' label='Time Series' state={props.state}/>
+    <Energy key='Energy Diagram' label='Energy Diagram' state={props.state} energyFn = {props.data.energy}/>,
+    <Readout key='Time Series' label='Time Series' state={props.state}/>,
+    <Info key='Info' label='Info' state={props.state} info={props.data.info}/>
   ]
 
   return (
