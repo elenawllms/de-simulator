@@ -12,9 +12,9 @@ const NewGrid = new Grid(
 
 const optionRanges = state => [
     {name: 'Initial Angle', min: -3.14, max: 3.14, units: 'rad', update: updateFromOptions(state).initialTheta, value: state.initialTheta},
-    {name: 'Initial Velocity', min: -3.14, max: 3.14, units: 'rad/s', update: updateFromOptions(state).initialOmega, value: state.initialOmega},
+    {name: 'Initial Velocity', min: -5, max: 5, units: 'rad/s', update: updateFromOptions(state).initialOmega, value: state.initialOmega},
     {name: 'Damping Constant', min: 0, max: 2, units: 'kg/s', update: updateFromOptions(state).damping, value: state.damping},
-    {name: 'Length', min: 0.5, max: 1.5, units: 'm', update: updateFromOptions(state).length, value: state.length}
+    {name: 'Length', min: 1, max: 1.5, units: 'm', update: updateFromOptions(state).length, value: state.length}
 ];
 
 const h = 0.01;
@@ -97,7 +97,7 @@ const drawVisualization = (c, props) => {
   };
 
 const updateFromOptions = state => ({
-    initialTheta: (value) => {console.log(value); state.initialTheta = parseFloat(value);},
+    initialTheta: (value) => {state.initialTheta = parseFloat(value);},
     initialOmega: (value) => {state.initialOmega = parseFloat(value);},
     damping: (value) => {state.damping = parseFloat(value)},
     length: (value) => {state.length = parseFloat(value)}

@@ -1,46 +1,55 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 
 
 export default function Option(props) {
 
     const [value, setValue] = useState(props.option.value);
-    
-    // eslint-disable-next-line
-    useEffect(() => {props.option.update(value)}, [value]);
 
-    const handleChange = (e) => {
-        setValue(e.target.value);
+
+    const handleBlur = () => {
+        var revisedValue = value;
+        if (value < props.option.min) {
+            revisedValue = props.option.min;
+        } else if (value > props.option.max) {
+            revisedValue = props.option.max;
+        }
+        setValue(revisedValue);
+        props.option.update(revisedValue);
     };
 
-    const handleInputChange = (e, newValue) => {
+    const handleSliderChange = (e) => {
+        setValue(e.target.value);
+        props.option.update(value);
+    };
+
+    const handleInputChange = (e) => {
         setValue(e.target.value === '' ? '' : Number(e.target.value));
     }
 
-    const handleBlur = () => {
-        if (value < props.option.min) {
-          setValue(props.option.min);
-        } else if (value > props.option.max) {
-          setValue(props.option.max);
-        }
-    };
-
     return (
         <div className="option">
-            <p id="input-slider">
-                {props.option.name}: <input type="number"
+            <div className="option-banner">
+                <span className="option-name">{props.option.name}</span>
+                <span className="option-value">
+                <input type="number" onWheel={(e) => e.target.blur()}
                     value={value}
                     size="small"
                     onChange={handleInputChange}
                     onBlur={handleBlur}
-                />
-            </p>
-
+                /> {props.option.units}
+                </span>
+            </div>
+            
             <input type="range"
-            value={value} 
-            onChange={handleChange}
-            min={props.option.min} 
-            max={props.option.max}
-            step={0.01}/>
+                value={value} 
+                onChange={handleSliderChange}
+                min={props.option.min} 
+                max={props.option.max}
+                step={0.01}/>
+
+            
+
+            
             
         </div>
     )

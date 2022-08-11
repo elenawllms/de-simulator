@@ -11,6 +11,7 @@
   --text-color: #000;
   --theme-color-1: 4, 122, 255;
   --theme-color-1-dark: 0, 42, 87;
+  --theme-color-1-light: 171, 210, 255;
   --transition: 0.5s ease;
 }
 
@@ -164,19 +165,164 @@
 
 .panel-content {
   height: calc(100% - 32px);
+}
+
+#StateSpace {
   display: flex;
   align-items: center;
-  justify-content: center;  
+  justify-content: center; 
+  height: 100%;
 }
 
 
 /* ---- OPTIONS TAB ---- */
 
-.option {
-  width: 250px;
-  padding: 5px;
-  margin: 10px;
+#Options {
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 100%;
+  text-align: center;
 }
+
+.option {
+  width: 100%;
+  padding: 20px 0;
+  text-align: left;
+}
+
+.option:not(:last-child) {
+  border-bottom: 1px solid var(--line-color);
+}
+
+.option-banner {
+  width: 100%;
+}
+
+.option-value {
+  float: right;
+}
+
+.option input[type="number"] {
+  display: inline; 
+  width: 50px;
+  padding: 0 5px;
+  margin-right: 5px;
+  border: none;
+  font-family: inherit;
+  font-size: 16px;
+  /* background-color: var(--background-color); */
+  border-bottom: 1px solid var(--text-color);
+  text-align: right;
+  -moz-appearance: textfield;
+  color: var(--text-color);
+}
+
+.option input[type="number"]:focus {
+  outline: none;
+  border-bottom: 2px solid var(--text-color);
+
+}
+
+.option input::-webkit-outer-spin-button,
+.option input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+.option input[type="range"] {
+  width: 100%;
+}
+
+/* --- START CUSTOM SLIDER PROPERTIES --- might want to pull this into a separate file*/
+input[type=range] {
+  height: 25px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #000000;
+  background: rgb(var(--theme-color-1));
+  border-radius: 1px;
+  border: 0px solid #000000;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 1px solid rgb(var(--theme-color-1));
+  height: 14px;
+  width: 14px;
+  border-radius: 25px;
+  background: rgb(var(--theme-color-1-light));
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -6px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: rgb(var(--theme-color-1));
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #000000;
+  background: rgb(var(--theme-color-1));
+  border-radius: 1px;
+  border: 0px solid #000000;
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 1px solid rgb(var(--theme-color-1));
+  height: 14px;
+  width: 14px;
+  border-radius: 25px;
+  background: rgb(var(--theme-color-1-light));
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: rgb(var(--theme-color-1));
+  border: 0px solid #000000;
+  border-radius: 2px;
+  box-shadow: 0px 0px 0px #000000;
+}
+input[type=range]::-ms-fill-upper {
+  background: rgb(var(--theme-color-1));
+  border: 0px solid #000000;
+  border-radius: 2px;
+  box-shadow: 0px 0px 0px #000000;
+}
+input[type=range]::-ms-thumb {
+  margin-top: 1px;
+  box-shadow: 0px 0px 0px #000000;
+  border: 1px solid rgb(var(--theme-color-1));
+  height: 14px;
+  width: 14px;
+  border-radius: 25px;
+  background: rgb(var(--theme-color-1-light));
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: rgb(var(--theme-color-1));
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: rgb(var(--theme-color-1));
+}
+/* --- END CUSTOM SLIDER PROPERTIES --- might want to pull this into a separate file*/
+
 
 
 /* ---- PAUSE/PLAY AND RESET BUTTONS ---- */

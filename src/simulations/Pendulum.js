@@ -16,7 +16,7 @@ export default function Pendulum(props) {
 
   // set initial state of pendulum system. should ideally have initial and actual values be the same.
   const [pendState, setPendState] = useState(
-    {time: 0, initialTheta: 3, initialOmega: 3, theta: 3, omega: 3, damping: 0.2, length: 1}
+    {time: 0, initialTheta: 3, initialOmega: 3, theta: 3, omega: 3, damping: 0.2, length: 1.5}
     );
   const [clock, setClock] = useState(0);
 
@@ -44,6 +44,7 @@ export default function Pendulum(props) {
     pendState.time = 0;
     pendState.theta = pendState.initialTheta;
     pendState.omega = pendState.initialOmega;
+    setPendState(state => ({...state}));
   }
  
 
