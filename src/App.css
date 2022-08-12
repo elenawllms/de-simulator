@@ -122,6 +122,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 
 /* ---- TABS OF PANEL ---- */
@@ -175,7 +176,6 @@
   justify-content: center; 
   height: 100%;
 }
-
 
 /* ---- OPTIONS TAB ---- */
 
