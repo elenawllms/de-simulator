@@ -3,7 +3,14 @@ import React, {useState} from 'react'
 
 export default function Option(props) {
 
-    const [value, setValue] = useState(props.option.value);
+    const valueName = props.option.name;
+    const updateValue = (newValue) => {
+        const newState = {...props.state};
+        newState[valueName] = newValue;
+        props.setState(newState);
+    }
+
+    const [value, setValue] = useState(props.state[valueName]);
 
 
     const handleBlur = () => {
@@ -14,12 +21,12 @@ export default function Option(props) {
             revisedValue = props.option.max;
         }
         setValue(revisedValue);
-        props.option.update(revisedValue);
+        updateValue(revisedValue);
     };
 
     const handleSliderChange = (e) => {
         setValue(e.target.value);
-        props.option.update(value);
+        updateValue(e.target.value);
     };
 
     const handleInputChange = (e) => {
@@ -29,7 +36,7 @@ export default function Option(props) {
     return (
         <div className="option">
             <div className="option-banner">
-                <span className="option-name">{props.option.name}</span>
+                <span className="option-name">{props.option.displayName}</span>
                 <span className="option-value">
                 <input type="number" onWheel={(e) => e.target.blur()}
                     value={value}

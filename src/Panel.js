@@ -22,7 +22,7 @@ export default function Panel(props) {
       pastStates={props.pastStates}
       isDark={props.theme === 'dark'}
       derivatives={props.data.derivatives}/>,
-    <Options key='Options' label='Options' state={props.state} optionRanges={props.data.optionRanges}/>,
+    <Options key='Options' label='Options' state={props.state} setState={props.setState} options={props.data.options}/>,
     <Energy key='Energy Diagram' label='Energy Diagram' state={props.state} energyFn = {props.data.energy}/>,
     <Readout key='Time Series' label='Time Series' state={props.state}/>,
     <Info key='Info' label='Info' state={props.state} info={props.data.info}/>

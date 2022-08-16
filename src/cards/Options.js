@@ -4,16 +4,16 @@ import Option from './Option.js'
 
 
 export default function Options(props) {
-  const optionRanges = props.data.optionRanges;
+  const options = props.options;
 
   return (
     <div id="Options">
-      {optionRanges(props.state).map((option) => 
-        {return <Option
+      {options.map(option => (<Option
                   key={option.name} 
-                  optionRanges={props.optionRanges}
-                 />}
-      )}
+                  state={props.state}
+                  option={option}
+                  setState={props.setState}
+                 />))}
     </div>
   )
 }

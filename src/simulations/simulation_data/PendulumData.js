@@ -21,19 +21,19 @@ const stateSpaceProps = {
 }
 
 
-const optionRanges = state => [
-    {name: 'Initial Angle', min: -3.14, max: 3.14, units: 'rad', value: "initialAngle"},
-    {name: 'Initial Velocity', min: -5, max: 5, units: 'rad/s', value: "initialVelocity"},
-    {name: 'Damping Constant', min: 0, max: 2, units: 'kg/s', value: "damping"},
-    {name: 'Length', min: 1, max: 1.5, units: 'm', value: "length"},
-    {name: 'Force', min: 1, max: 1.5, units: 'N', value: "force"},
-    {name: 'Forcing Frequency', min: 1, max: 1.5, units: 'rad/s', value: "forcingFrequency"}
+const options = [
+    {displayName: 'Initial Angle', min: -3.14, max: 3.14, units: 'rad', name: "initialAngle"},
+    {displayName: 'Initial Velocity', min: -5, max: 5, units: 'rad/s', name: "initialVelocity"},
+    {displayName: 'Damping Constant', min: 0, max: 2, units: 'kg/s', name: "damping"},
+    {displayName: 'Length', min: 1, max: 1.5, units: 'm', name: "length"},
+    {displayName: 'Force', min: 1, max: 1.5, units: 'N', name: "force"},
+    {displayName: 'Forcing Frequency', min: 1, max: 1.5, units: 'rad/s', name: "forcingFrequency"}
 ];
 
 const h = 0.01;
 
 const derivatives = {angle: (state) => state.velocity, 
-             velocity: (state) => (-9.8 * Math.sin(state.angle) / state.length) - (state.damping * state.velocity)};
+             velocity: (state) => (-9.8 * Math.sin(state.angle) / state.length) - (state.damping * state.velocity) + state.force * Math.cos(state.forcingFrequency * state.time)};
 
 const incrementState = (state) => {
     const newState = rk4(state, derivatives, ["angle", "velocity"], h);
@@ -62,7 +62,7 @@ export const PendulumData = {
     title: "Pendulum",
     defaultState: defaultState,
     stateSpaceProps: stateSpaceProps,
-    optionRanges: optionRanges,
+    options: options,
     incrementState: incrementState,
     getEnergyFromState: getEnergyFromState,
     derivatives: derivatives,
