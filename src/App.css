@@ -108,15 +108,12 @@
   background: var(--card-color);
 }
 
-#StateSpace>canvas {
-  width: 500px;
-  height: 500px;
+#StateSpace>div {
   cursor: pointer;
-  /* border: 1px solid red; */
 }
 
 
-#Visualization, #Energy {
+.Visualization, #Energy {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -165,7 +162,7 @@
 }
 
 #Panel {
-  max-height: 550px;
+  max-height: 548px;
 }
 
 .panel-content {

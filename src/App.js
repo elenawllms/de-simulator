@@ -1,7 +1,8 @@
 import './App.css';
-import {Pendulum} from './simulations/index.js';
+import Simulation from './Simulation.js';
 import {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { PendulumData } from './simulations/data/PendulumData';
 import Main from './Main.js';
 
 
@@ -30,7 +31,7 @@ function App() {
       <BrowserRouter>
         <Routes>
         <Route path="/" element={<Main switchTheme={switchTheme} theme={theme} />} />
-          <Route path="/pendulum" element={<Pendulum switchTheme={switchTheme} theme={theme} />} />
+          <Route path="/pendulum" element={<Simulation switchTheme={switchTheme} theme={theme} data={PendulumData} />} />
           {/* <Route path="/spring" element={<Spring switchTheme={switchTheme} theme={theme} />} /> */}
         </Routes>
       </BrowserRouter>

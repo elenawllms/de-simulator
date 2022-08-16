@@ -1,4 +1,5 @@
 import { rk4 } from '../../constants.js';
+import PendulumVis from '../visualizations/PendulumVis.js';
 var Latex = require('react-latex');
 
 const defaultState = {
@@ -15,6 +16,7 @@ const defaultState = {
 
 const stateSpaceProps = {
     variables: {x: 'angle', y: 'velocity'},
+    initialVariables: {x: 'initialAngle', y: 'initialVelocity'},
     limits: {x: [-3.5, 3.5], y: [-10, 10]},
     ticks: {x: 1, y: 3},
     origin: {x: 0, y: 0},
@@ -26,8 +28,8 @@ const options = [
     {displayName: 'Initial Velocity', min: -5, max: 5, units: 'rad/s', name: "initialVelocity"},
     {displayName: 'Damping Constant', min: 0, max: 2, units: 'kg/s', name: "damping"},
     {displayName: 'Length', min: 1, max: 1.5, units: 'm', name: "length"},
-    {displayName: 'Force', min: 1, max: 1.5, units: 'N', name: "force"},
-    {displayName: 'Forcing Frequency', min: 1, max: 1.5, units: 'rad/s', name: "forcingFrequency"}
+    {displayName: 'Force', min: 0, max: 2, units: 'N', name: "force"},
+    {displayName: 'Forcing Frequency', min: 0.25, max: 4, units: 'rad/s', name: "forcingFrequency"}
 ];
 
 const h = 0.01;
@@ -45,6 +47,7 @@ const getEnergyFromState = (state) => (
     0.5 * Math.pow(state.velocity, 2) + 9.8 * Math.cos(state.angle) / state.length
 )
 
+const visualization = PendulumVis;
 
 const info = <>
     <h1>Pendulum</h1>
@@ -58,6 +61,7 @@ const info = <>
 </>;
 
 
+
 export const PendulumData = {
     title: "Pendulum",
     defaultState: defaultState,
@@ -66,7 +70,8 @@ export const PendulumData = {
     incrementState: incrementState,
     getEnergyFromState: getEnergyFromState,
     derivatives: derivatives,
-    info: info
+    info: info,
+    visualization: visualization
 }
 
 

@@ -1,21 +1,19 @@
 /* 
-* PENDULUM: Component controlling layout for Pendulum site. All dependent
+* SIMULATION: Component controlling layout for Pendulum site. All dependent
 * components should be generalizable given the appropriate data file.
 * 
 * Good for now
 */
 
 import React, {useState, useEffect} from 'react';
-import NavBar from '../NavBar.js';
-import Panel from '../Panel.js';
-import Visualization from '../cards/Visualization.js';
-import {PendulumData as data} from './simulation_data/PendulumData.js';
-
+import NavBar from './NavBar.js';
+import Panel from './Panel.js';
+import PendulumVis from './simulations/visualizations/PendulumVis.js';
 
 export default function Pendulum(props) {
 
   // set initial state of pendulum system. should ideally have initial and actual values be the same.
-  const [state, setState] = useState(data.defaultState);
+  const [state, setState] = useState(props.data.defaultState);
   // eslint-disable-next-line
   const [pastStates, setPastStates] = useState([]);
   const [clock, setClock] = useState(0);
@@ -31,12 +29,13 @@ export default function Pendulum(props) {
   // update the pendulum's state regularly based on a window interval
   const play = () => {
     const intervalId = setInterval(() => {
-      setState(state => ({...data.incrementState(state)}));
+      setState(state => ({...props.data.incrementState(state)}));
     }, 10);
     setClock(intervalId);
   }
 
   // on load, start playing the animation. remove/comment this line to not play automatically.
+  // eslint-disable-next-line
   useEffect(play, []);
 
   const pauseOrPlay = () => {
@@ -49,6 +48,7 @@ export default function Pendulum(props) {
   // on reset, update t=0, and set angle and velocity to their initial states
   const reset = () => {
     state.time = 0;
+    
     state.angle = state.initialAngle;
     state.velocity = state.initialVelocity;
     setState(state => ({...state}));
@@ -58,7 +58,7 @@ export default function Pendulum(props) {
 
   return (
     <>
-        <NavBar switchTheme={props.switchTheme} theme={props.theme} title={data.title}/>
+        <NavBar switchTheme={props.switchTheme} theme={props.theme} title={props.data.title}/>
         <button className="controlButton" id="pauseOrPlay" onClick={pauseOrPlay}>
           {clock ? <span className="material-symbols-rounded">pause</span> 
           : <span className="material-symbols-rounded">play_arrow</span> }
@@ -67,8 +67,8 @@ export default function Pendulum(props) {
         
         <div id="stage-wrapper">
           <div className="Stage">
-            <Visualization state={state}/>
-            <Panel data={data} theme={props.theme} state={state} setState={setState} pastStates={pastStates} reset={reset}/>
+            <PendulumVis state={state} theme={props.theme}/>
+            <Panel data={props.data} theme={props.theme} state={state} setState={setState} pastStates={pastStates} reset={reset}/>
           </div>
         </div>
     </>

@@ -29,7 +29,7 @@ export default function StateSpace(props) {
     return (x != null & y != null) ? [x, y] : null;
   }
   const initialScaling = (p) => {
-    p.translate(p.width / 2, p.width / 2);
+    p.translate(p.width / 2, p.height / 2);
     p.scale(p.width / (totalCanvasSize * 2));
     p.background(props.isDark ? 20 : 255);
   }
@@ -150,10 +150,23 @@ export default function StateSpace(props) {
   }
 
   const setup = (p, canvasParentRef) => {
-    p.createCanvas(500, 500).parent(canvasParentRef);
+    const c = p.createCanvas(500, 500).parent(canvasParentRef);
     p.pixelDensity(4);
     p.textFont('Alegreya');
     
+    c.mouseClicked(e => {
+      const scaledPosition = [e.offsetX - p.width / 2, e.offsetY - p.width / 2].map(
+        val => val * (totalCanvasSize * 2) / p.width);
+      const stateValues = {x: getXVal(scaledPosition[0]), y: getYVal(scaledPosition[1])}
+
+      if (stateValues.x != null && stateValues.y != null) {
+        console.log(stateValues);
+        state[gridProps.initialVariables.x] = stateValues.x;
+        state[gridProps.initialVariables.y] = stateValues.y;
+        props.setState(state);
+        props.reset();
+      }
+    })
     
   }
 
@@ -164,6 +177,7 @@ export default function StateSpace(props) {
     drawSlopes(p);
     drawState(p);
   }
+
 
   return (
     <div id="StateSpace">
