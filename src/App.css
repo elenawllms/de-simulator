@@ -9,9 +9,7 @@
   --line-color: #d8d8d8;
   --card-color: #fff;
   --text-color: #000;
-  --theme-color-1: 4, 122, 255;
-  --theme-color-1-dark: 0, 42, 87;
-  --theme-color-1-light: 171, 210, 255;
+  --theme-color-1: 212, 100%;
   --transition: 0.5s ease;
 }
 
@@ -21,8 +19,7 @@
   --card-color: #1F1E27;
   --text-color: #eee;
   --line-color: #3b3b41;
-  --theme-color-1: 0, 88, 181;
-  --theme-color-1-dark: 0, 29, 61;
+  --theme-color-1: 250, 70%;
 }
 
 #App {
@@ -204,6 +201,10 @@
   float: right;
 }
 
+.option input {
+  background: none;
+}
+
 .option input[type="number"] {
   display: inline; 
   width: 50px;
@@ -251,40 +252,40 @@ input[type=range]::-webkit-slider-runnable-track {
   height: 3px;
   cursor: pointer;
   box-shadow: 0px 0px 0px #000000;
-  background: rgb(var(--theme-color-1));
+  background: hsl(var(--theme-color-1), 50%);
   border-radius: 1px;
   border: 0px solid #000000;
 }
 input[type=range]::-webkit-slider-thumb {
   box-shadow: 0px 0px 0px #000000;
-  border: 1px solid rgb(var(--theme-color-1));
+  border: 1px solid hsl(var(--theme-color-1), 50%);
   height: 14px;
   width: 14px;
   border-radius: 25px;
-  background: rgb(var(--theme-color-1-light));
+  background: hsl(var(--theme-color-1), 75%);
   cursor: pointer;
   -webkit-appearance: none;
   margin-top: -6px;
 }
 input[type=range]:focus::-webkit-slider-runnable-track {
-  background: rgb(var(--theme-color-1));
+  background: hsl(var(--theme-color-1), 50%);
 }
 input[type=range]::-moz-range-track {
   width: 100%;
   height: 3px;
   cursor: pointer;
   box-shadow: 0px 0px 0px #000000;
-  background: rgb(var(--theme-color-1));
+  background: hsl(var(--theme-color-1), 50%);
   border-radius: 1px;
   border: 0px solid #000000;
 }
 input[type=range]::-moz-range-thumb {
   box-shadow: 0px 0px 0px #000000;
-  border: 1px solid rgb(var(--theme-color-1));
+  border: 1px solid hsl(var(--theme-color-1), 50%);
   height: 14px;
   width: 14px;
   border-radius: 25px;
-  background: rgb(var(--theme-color-1-light));
+  background: hsl(var(--theme-color-1), 75%);
   cursor: pointer;
 }
 input[type=range]::-ms-track {
@@ -296,13 +297,13 @@ input[type=range]::-ms-track {
   color: transparent;
 }
 input[type=range]::-ms-fill-lower {
-  background: rgb(var(--theme-color-1));
+  background: hsl(var(--theme-color-1), 50%);
   border: 0px solid #000000;
   border-radius: 2px;
   box-shadow: 0px 0px 0px #000000;
 }
 input[type=range]::-ms-fill-upper {
-  background: rgb(var(--theme-color-1));
+  background: hsl(var(--theme-color-1), 50%);
   border: 0px solid #000000;
   border-radius: 2px;
   box-shadow: 0px 0px 0px #000000;
@@ -310,18 +311,18 @@ input[type=range]::-ms-fill-upper {
 input[type=range]::-ms-thumb {
   margin-top: 1px;
   box-shadow: 0px 0px 0px #000000;
-  border: 1px solid rgb(var(--theme-color-1));
+  border: 1px solid hsl(var(--theme-color-1), 50%);
   height: 14px;
   width: 14px;
   border-radius: 25px;
-  background: rgb(var(--theme-color-1-light));
+  background: hsl(var(--theme-color-1), 75%);
   cursor: pointer;
 }
 input[type=range]:focus::-ms-fill-lower {
-  background: rgb(var(--theme-color-1));
+  background: hsl(var(--theme-color-1), 50%);
 }
 input[type=range]:focus::-ms-fill-upper {
-  background: rgb(var(--theme-color-1));
+  background: hsl(var(--theme-color-1), 50%);
 }
 /* --- END CUSTOM SLIDER PROPERTIES --- might want to pull this into a separate file*/
 
@@ -351,8 +352,8 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .controlButton:hover {
-  background-color: rgb(var(--theme-color-1));
-  box-shadow: rgb(var(--theme-color-1-dark), 0.7) 0px 10px 15px -5px;
+  background-color: hsl(var(--theme-color-1), 50%);
+  box-shadow: hsl(var(--theme-color-1), 25%, 0.7) 0px 10px 15px -5px;
   color: white;
 }
 
@@ -371,7 +372,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .controlButton svg:hover {
-  fill: rgb(var(--theme-color-1));
+  fill: hsl(var(--theme-color-1), 50%);
 }
 
 

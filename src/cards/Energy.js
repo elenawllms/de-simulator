@@ -14,7 +14,7 @@ export default function Energy(props) {
 
   return (
     <div id="Energy">
-      <Sketch id="energy-plot-container" setup={setup} draw={draw}></Sketch>
+      <Sketch id="energy-plot" setup={setup} draw={draw}></Sketch>
     </div>
   )
 }

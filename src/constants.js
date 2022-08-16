@@ -33,7 +33,7 @@ export const drawLine = (ctx, x1, x2, y1, y2) => {
     ctx.stroke();
 }
 
-export const rk4 = (initialState, des, stateVars, h) => {
+export const rk4 = (initialState, derivatives, stateVars, h) => {
     const kList = Array(4).fill().map(()=> {return {}});
     const stateVarIncrementors = [v => 0, v => kList[0][v]*h/2, v => kList[1][v]*h/2, v => kList[2][v]*h];
     const timeIncrements = [0, h/2, h/2, h];
@@ -49,7 +49,7 @@ export const rk4 = (initialState, des, stateVars, h) => {
         }
         for (let j=0; j<stateVars.length; j++) {
             stateVar = stateVars[j];
-            kList[i][stateVar] = des[stateVar](states[i]);
+            kList[i][stateVar] = derivatives[stateVar](states[i]);
         }
 
     }

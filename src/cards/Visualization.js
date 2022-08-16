@@ -5,8 +5,6 @@ export default function Visualization(props) {
   const pendulumRef = useRef(null);
   
   useEffect(() => {
-    const c = pendulumRef.current;
-    props.drawVisualization(c, props);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.state.time]);
 

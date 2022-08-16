@@ -3,9 +3,6 @@ import React, {useState} from 'react'
 import {Energy, Options, Readout, StateSpace, Info} from './cards/index.js';
 
 
-
-
-
 export default function Panel(props) {
 
   const [activeTab, setActiveTab] = useState('State Space');
@@ -17,12 +14,15 @@ export default function Panel(props) {
   const tabs = [
     <StateSpace 
       key='State Space' 
-      label='State Space' 
-      grid={props.data.grid} 
+      label='State Space'
+      gridProps={props.data.stateSpaceProps}
+      reset={props.reset}
       setState={props.setState} 
       state={props.state}
-      pastStates={props.pastStates}/>,
-    <Options key='Options' label='Options' state={props.state} data={props.data}/>,
+      pastStates={props.pastStates}
+      isDark={props.theme === 'dark'}
+      derivatives={props.data.derivatives}/>,
+    <Options key='Options' label='Options' state={props.state} optionRanges={props.data.optionRanges}/>,
     <Energy key='Energy Diagram' label='Energy Diagram' state={props.state} energyFn = {props.data.energy}/>,
     <Readout key='Time Series' label='Time Series' state={props.state}/>,
     <Info key='Info' label='Info' state={props.state} info={props.data.info}/>

@@ -15,32 +15,29 @@ import {PendulumData as data} from './simulation_data/PendulumData.js';
 export default function Pendulum(props) {
 
   // set initial state of pendulum system. should ideally have initial and actual values be the same.
-  const [pendState, setPendState] = useState(
-    {time: 0, initialTheta: 3, initialOmega: 3, theta: 3, omega: 3, damping: 0.2, length: 1.5}
-    );
+  const [state, setState] = useState(data.defaultState);
   // eslint-disable-next-line
   const [pastStates, setPastStates] = useState([]);
   const [clock, setClock] = useState(0);
 
   useEffect(() => {
-    pastStates.push(pendState);
-    // if (pastStates.length > 50) {
-    //   pastStates.shift();
-    // }
+    pastStates.push(state);
+    if (pastStates.length > 50) {
+      pastStates.shift();
+    }
     // eslint-disable-next-line
-  }, [pendState]);
+  }, [state]);
 
   // update the pendulum's state regularly based on a window interval
   const play = () => {
     const intervalId = setInterval(() => {
-      setPendState(state => ({...data.update(state)}));
+      setState(state => ({...data.incrementState(state)}));
     }, 10);
     setClock(intervalId);
   }
 
   // on load, start playing the animation. remove/comment this line to not play automatically.
   useEffect(play, []);
-
 
   const pauseOrPlay = () => {
     if (clock) {
@@ -49,12 +46,12 @@ export default function Pendulum(props) {
     } else {play();}
   }
 
-  // on reset, update t=0, and set theta and omega to their initial states
+  // on reset, update t=0, and set angle and velocity to their initial states
   const reset = () => {
-    pendState.time = 0;
-    pendState.theta = pendState.initialTheta;
-    pendState.omega = pendState.initialOmega;
-    setPendState(state => ({...state}));
+    state.time = 0;
+    state.angle = state.initialAngle;
+    state.velocity = state.initialVelocity;
+    setState(state => ({...state}));
     setPastStates([]);
   }
  
@@ -70,8 +67,8 @@ export default function Pendulum(props) {
         
         <div id="stage-wrapper">
           <div className="Stage">
-            <Visualization drawVisualization={data.drawVisualization} state={pendState}/>
-            <Panel data={data} state={pendState} setState={setPendState} pastStates={pastStates}/>
+            <Visualization state={state}/>
+            <Panel data={data} theme={props.theme} state={state} setState={setState} pastStates={pastStates} reset={reset}/>
           </div>
         </div>
     </>
