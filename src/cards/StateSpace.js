@@ -161,6 +161,7 @@ export default function StateSpace(props) {
 
       if (stateValues.x != null && stateValues.y != null) {
         console.log(stateValues);
+        state.time = 0;
         state[gridProps.initialVariables.x] = stateValues.x;
         state[gridProps.initialVariables.y] = stateValues.y;
         props.setState(state);
