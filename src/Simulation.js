@@ -48,11 +48,12 @@ export default function Pendulum(props) {
   // on reset, update t=0, and set angle and velocity to their initial states
   const reset = () => {
     state.time = 0;
-    
+
     state.angle = state.initialAngle;
     state.velocity = state.initialVelocity;
     setState(state => ({...state}));
     setPastStates([]);
+    console.log(state);
   }
  
 

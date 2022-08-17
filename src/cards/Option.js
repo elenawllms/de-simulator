@@ -10,11 +10,21 @@ export default function Option(props) {
         props.setState(newState);
     }
 
-    const [value, setValue] = useState(props.state[valueName]);
+    const [value, setValue] = useState(Number(props.state[valueName].toFixed(2)));
+
+
+    const handleSliderChange = (e) => {
+        setValue(Number(e.target.value));
+        updateValue(Number(e.target.value));
+    };
+
+    const handleInputChange = (e) => {
+        setValue(e.target.value === '' ? '' : Number(e.target.value));
+    }
 
 
     const handleBlur = () => {
-        var revisedValue = value;
+        var revisedValue = Number(value.toFixed(2));
         if (value < props.option.min) {
             revisedValue = props.option.min;
         } else if (value > props.option.max) {
@@ -24,14 +34,6 @@ export default function Option(props) {
         updateValue(revisedValue);
     };
 
-    const handleSliderChange = (e) => {
-        setValue(e.target.value);
-        updateValue(e.target.value);
-    };
-
-    const handleInputChange = (e) => {
-        setValue(e.target.value === '' ? '' : Number(e.target.value));
-    }
 
     return (
         <div className="option">
