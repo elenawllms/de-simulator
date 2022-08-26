@@ -225,7 +225,7 @@ export default function StateSpace(props) {
       </div>
       <div className='bottomRow'>
         <BottomRowSpan label={gridProps.labels.x} value={state[xVar]} units={gridProps.units.x}/>
-        <BottomRowSpan label={gridProps.labels.x} value={state[yVar]} units={gridProps.units.y}/>
+        <BottomRowSpan label={gridProps.labels.y} value={state[yVar]} units={gridProps.units.y}/>
         <span>
           <button onClick={() => {setTrailStyle(trailStyle === 'comet' ? 'path' : 'comet')}}>
             {trailStyle === 'comet' ? 'Draw Path' : 'Draw Comet'}

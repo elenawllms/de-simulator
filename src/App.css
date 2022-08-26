@@ -22,10 +22,58 @@
   --theme-color-1: 250, 70%;
 }
 
+
 #App {
   background: var(--background-color);
   color: var(--text-color);
 }
+
+/* ----- MAIN HOMEPAGE ----- */
+
+#Main {
+  height: 100%;
+  margin: 0;
+  padding: 80px 100px;
+  width: 100%;
+  background: white;
+  align-content: center;
+}
+
+#Main h1, h2 {
+  text-align: center;
+}
+
+#Main .cardLinks {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 50px;
+  margin-top: 50px;
+}
+
+#Main .card {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 10px;
+}
+
+#Main .card img {
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+
+}
+
+#Main .card .desc {
+  padding: 20px;
+  text-decoration: none;
+  color: black;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* OTHER */
+
+
 
 /* uses flex to center the stage inside remaining space */
 #stage-wrapper {
@@ -36,6 +84,8 @@
   text-align: center;
   height: calc(100vh - 50px);
 }
+
+
 
 /* ----- UPPER NAVIGATION BAR ----- */
 

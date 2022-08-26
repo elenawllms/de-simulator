@@ -74,7 +74,7 @@ const getEnergyFromState = (state) => (
     - 9.8 * Math.cos(state.angle) / state.length
 )
 
-const visualization = PendulumVis;
+const visualization = (state, theme) => <PendulumVis state={state} theme={theme}/>;
 
 const info = <>
     <h1>Pendulum</h1>

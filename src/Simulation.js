@@ -1,5 +1,5 @@
 /* 
-* SIMULATION: Component controlling layout for Pendulum site. All dependent
+* SIMULATION: Component controlling layout for site. All dependent
 * components should be generalizable given the appropriate data file.
 * 
 * Good for now
@@ -8,7 +8,6 @@
 import React, {useState, useEffect} from 'react';
 import NavBar from './NavBar.js';
 import Panel from './Panel.js';
-import PendulumVis from './simulations/visualizations/PendulumVis.js';
 
 export default function Pendulum(props) {
 
@@ -66,7 +65,7 @@ export default function Pendulum(props) {
         
         <div id="stage-wrapper">
           <div className="Stage">
-            <PendulumVis state={state} theme={props.theme}/>
+            {props.data.visualization(state, props.theme)}
             <Panel data={props.data} theme={props.theme} state={state} setState={setState} pastStates={pastStates} reset={reset}/>
           </div>
         </div>
