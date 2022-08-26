@@ -46,7 +46,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 30px 0 20px;
 }
 
 #navbar-left, #navbar-right {
@@ -82,11 +82,10 @@
   border: none;
   background: none;
   cursor: pointer;
-  margin: auto 20px;
   height: 20px;
 }
 
-.NavBar>div>button>svg {
+.NavBar>div>button svg {
   fill: var(--text-color);
   width: 20px;
   height: 20px;
@@ -99,7 +98,7 @@
   grid-template-columns: auto 550px;
   background: var(--line-color);
   border: 1px solid var(--line-color);
-  height: 550px !important;
+  height: 560px !important;
   min-width: 900px;
 
 }
@@ -108,12 +107,12 @@
   background: var(--card-color);
 }
 
-#StateSpace>div {
+#StateSpace>.graphicsContainer {
   cursor: pointer;
 }
 
 
-.Visualization, #Energy {
+.Visualization {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -162,40 +161,84 @@
 }
 
 #Panel {
-  max-height: 548px;
+  max-height: 558px;
 }
 
 .panel-content {
   height: calc(100% - 32px);
 }
 
-#StateSpace {
+.graphicsWrapper {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 32px;
+}
+
+.bottomRow {
+  border-top: 1px solid var(--line-color);
+  padding: 0 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 20px;
+  font-size: 13px;
+  font-family: 'IBM Plex Mono';
+  min-width: 100%;
+  overflow-x: scroll;
+}
+
+.bottomRow span {
+  padding: 0;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.bottomRow button {
+  border: 1px solid var(--line-color);
+  background: inherit;
+  font-family: Alegreya;
+  font-size: 13px;
+  cursor: pointer;
+  width: 120px;
+  color: inherit;
+}
+
+.bottomRow button:hover {
+  background-color: var(--line-color) !important;
+}
+
+.graphicsContainer {
   display: flex;
   align-items: center;
   justify-content: center; 
-  height: 100%;
+  /* height: 520px; */
 }
+
+
 
 /* ---- OPTIONS TAB ---- */
 
 #Options {
   width: 100%;
-  padding: 10px 20px;
+  /* padding: 10px 20px; */
   font-size: 100%;
   text-align: center;
   height: 100%;
   overflow-y: scroll;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line-color);
 }
 
 .option {
   width: 100%;
-  padding: 20px 0;
+  padding: 20px;
   text-align: left;
 }
 
-.option:not(:last-child) {
-  border-bottom: 1px solid var(--line-color);
-}
 
 .option-banner {
   width: 100%;

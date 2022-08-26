@@ -8,7 +8,7 @@ export default function Panel(props) {
   const [activeTab, setActiveTab] = useState('State Space');
 
   const tabNames = [
-    'State Space', 'Options', 'Energy Diagram', 'Time Series', 'Info'
+    'Info', 'State Space', 'Energy Diagram', 'Time Series', 'Options'
   ]  
 
   const tabs = [
@@ -22,9 +22,30 @@ export default function Panel(props) {
       pastStates={props.pastStates}
       isDark={props.theme === 'dark'}
       derivatives={props.data.derivatives}/>,
-    <Options key='Options' label='Options' state={props.state} setState={props.setState} options={props.data.options}/>,
-    <Energy key='Energy Diagram' label='Energy Diagram' state={props.state} energyFn = {props.data.energy}/>,
-    <Readout key='Time Series' label='Time Series' state={props.state}/>,
+
+    <Options 
+      key='Options' 
+      label='Options' 
+      state={props.state} 
+      setState={props.setState} 
+      options={props.data.options}/>,
+
+    <Energy 
+      key='Energy Diagram' 
+      label='Energy Diagram' 
+      state={props.state} 
+      energy={props.data.getEnergyFromState}
+      isDark={props.theme === 'dark'}
+      gridProps={props.data.energyDiagramProps}/>,
+
+    <Readout 
+      key='Time Series' 
+      label='Time Series' 
+      state={props.state}
+      pastStates={props.pastStates}
+      isDark={props.theme === 'dark'}
+      gridProps={props.data.readoutProps}
+      vals={props.data.readoutVals}/>,
     <Info key='Info' label='Info' state={props.state} info={props.data.info}/>
   ]
 

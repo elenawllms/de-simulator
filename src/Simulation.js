@@ -20,7 +20,7 @@ export default function Pendulum(props) {
 
   useEffect(() => {
     pastStates.push(state);
-    if (pastStates.length > 50) {
+    if (pastStates.length > 5000) {
       pastStates.shift();
     }
     // eslint-disable-next-line
@@ -48,12 +48,10 @@ export default function Pendulum(props) {
   // on reset, update t=0, and set angle and velocity to their initial states
   const reset = () => {
     state.time = 0;
-
     state.angle = state.initialAngle;
     state.velocity = state.initialVelocity;
     setState(state => ({...state}));
     setPastStates([]);
-    console.log(state);
   }
  
 

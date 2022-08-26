@@ -56,7 +56,7 @@ export default function PendulumVis(props) {
   }
 
   const draw = p => {
-    p.background(isDark ? 20: 255);
+    p.background(isDark ? "#1F1E27" : 255);
     p.translate(p.width / 2, p.height / 2);
     drawPendulum(p);
   }

@@ -38,7 +38,7 @@ export default function Option(props) {
     return (
         <div className="option">
             <div className="option-banner">
-                <span className="option-name">{props.option.displayName}</span>
+                <span className="option-name">{props.option.displayName} (<span style={{fontSize: 13}}>{props.option.symbol}</span>)</span>
                 <span className="option-value">
                 <input type="number" onWheel={(e) => e.target.blur()}
                     value={value}

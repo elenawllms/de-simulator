@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Sketch from 'react-p5';
+import BottomRowSpan from '../templates/BottomRowSpan';
 
 const SLOPE_SCALE_FACTOR = 25;
 
@@ -12,6 +13,8 @@ const totalCanvasSize = 130;
 
 
 export default function StateSpace(props) {
+  const [trailStyle, setTrailStyle] = useState('comet');
+
   const state = props.state;
   const pastStates = props.pastStates;
   const gridProps = props.gridProps;
@@ -31,11 +34,11 @@ export default function StateSpace(props) {
   const initialScaling = (p) => {
     p.translate(p.width / 2, p.height / 2);
     p.scale(p.width / (totalCanvasSize * 2));
-    p.background(props.isDark ? 20 : 255);
+    p.background(props.isDark ? "#1F1E27" : 255);
   }
   const drawGrid = (p) => {
     p.stroke(isDark ? 255 : 0);
-    p.fill(isDark ? 20 : 255);
+    p.fill(isDark ? "#1F1E27" : 255);
     p.strokeWeight(0.2);
     p.rect(-100, -100, 200, 200);
   }
@@ -91,7 +94,7 @@ export default function StateSpace(props) {
     const magnitude = SLOPE_SCALE_FACTOR*Math.sqrt(dy*dy + dx*dx);
     if (isDark) {
       // stroke(color('hsl(' + (650 - int(magnitude)) % 360 + ', 90%, 70%)'));
-      p.stroke(0.7 * magnitude);
+      p.stroke(0.7 * magnitude + 30);
     } else {
       p.stroke(255 - 0.65 * magnitude);
     }
@@ -117,40 +120,75 @@ export default function StateSpace(props) {
     }
   }
 
-  function drawState(p) {
-    // draw current state
-    const currentPoint = getPoint([props.state[xVar], props.state[yVar]]);
-    if (currentPoint != null) {
-      p.stroke(isDark ? 0 : 255);
-      p.strokeWeight(9);
-      p.point(...currentPoint);
-      p.stroke("#0091ff");
-      p.strokeWeight(5);
-      p.point(...currentPoint);
-    }
-
-    // draw trail for past states
-    
-    const pastStatePoints = pastStates.map(state => {
+  function drawComet(p) {
+    const pastStatePoints = pastStates.slice(-50).map(state => {
       const scale = Math.exp(2 * (state.time - props.state.time));
       const point = getPoint([state[xVar], state[yVar]]);
       return {scale: scale, point: point};
     }).filter(pastState => pastState.point != null);
 
     // trailing points and shadows
-    [[isDark ? 20 : 255, 9], ["#0091ff", 5]].forEach(list => {
-      p.stroke(list[0]);
+    [{color: isDark ? "#1F1E27" : 255, size: 9}, {color:"#0091ff", size: 5}].forEach(trail => {
+      p.stroke(trail.color);
       pastStatePoints.forEach(pastState => {
 
-        p.strokeWeight(list[1] * pastState.scale);
+        p.strokeWeight(trail.size * pastState.scale);
         p.point(...pastState.point);
       })
     })
-    
+  }
+
+  function drawPath(p) {
+    const pastStatePoints = pastStates.map(
+      state => getPoint([state[xVar], state[yVar]])
+      ).filter(point => point != null);
+    p.stroke(isDark ? 235 : 20);
+    p.strokeWeight(1);
+    pastStatePoints.forEach(point => {
+      p.point(...point);
+    })
+  }
+
+  function drawState(p) {
+    // draw current state shadow
+    const currentPoint = getPoint([props.state[xVar], props.state[yVar]]);
+    if (currentPoint != null) {
+      p.stroke(isDark ? "#1F1E27" : 255);
+      p.strokeWeight(9);
+      p.point(...currentPoint);
+    }
+
+    // draw trail for past states
+    if (trailStyle === 'comet') {
+      drawComet(p);
+    } else {
+      drawPath(p);
+    };
+
+    // draw current state
+    if (currentPoint != null) {
+      p.stroke("#0091ff");
+      p.strokeWeight(5);
+      p.point(...currentPoint);
+    }
+
+        
+  }
+
+  const drawLabels = (p) => {
+    p.noStroke(0);
+    p.textSize(9);
+    p.text(gridProps.labels.x, 0, 125);
+
+    p.push();
+    p.rotate(-p.HALF_PI);
+    p.text(gridProps.labels.y, 0, -120);
+    p.pop();
+
   }
 
   const setup = (p, canvasParentRef) => {
-    const c = p.createCanvas(500, 500).parent(canvasParentRef);
+    const c = p.createCanvas(460, 460).parent(canvasParentRef);
     p.pixelDensity(4);
     p.textFont('Alegreya');
     
@@ -160,7 +198,6 @@ export default function StateSpace(props) {
       const stateValues = {x: getXVal(scaledPosition[0]), y: getYVal(scaledPosition[1])}
 
       if (stateValues.x != null && stateValues.y != null) {
-        console.log(stateValues);
         state.time = 0;
         state[gridProps.initialVariables.x] = stateValues.x;
         state[gridProps.initialVariables.y] = stateValues.y;
@@ -177,12 +214,24 @@ export default function StateSpace(props) {
     drawAllTicks(p);
     drawSlopes(p);
     drawState(p);
+    drawLabels(p);
   }
 
 
   return (
-    <div id="StateSpace">
-      <Sketch setup={setup} draw={draw}></Sketch>
+    <div id="StateSpace" className="graphicsWrapper">
+      <div className='graphicsContainer'>
+        <Sketch setup={setup} draw={draw}></Sketch>
+      </div>
+      <div className='bottomRow'>
+        <BottomRowSpan label={gridProps.labels.x} value={state[xVar]} units={gridProps.units.x}/>
+        <BottomRowSpan label={gridProps.labels.x} value={state[yVar]} units={gridProps.units.y}/>
+        <span>
+          <button onClick={() => {setTrailStyle(trailStyle === 'comet' ? 'path' : 'comet')}}>
+            {trailStyle === 'comet' ? 'Draw Path' : 'Draw Comet'}
+          </button>
+        </span>
+      </div>
     </div>
   )
 }
