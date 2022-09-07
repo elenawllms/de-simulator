@@ -1,15 +1,32 @@
 import React from 'react'
 import Sketch from 'react-p5';
 
+
+const PRIMARY_COLOR = "#0091ff";
+
+
 export default function SpringVis(props) {
 
     const state = props.state;
     const isDark = props.theme === 'dark';
 
     const drawSpring = p => {
-        p.strokeWeight(10);
+        const wall = [0, -150];
+        const springEnd = [0, wall[1] + 50 * (state.displacement + state.restLength)];
+        const interpolateSpring = frac => wall[1] + (springEnd[1] - wall[1]) * frac;
+        p.strokeWeight(3);
         p.stroke(0);
-        p.line(0, 0, 0, 50 * (state.displacement + state.restLength))
+        const yPoints = [0, 1/8, 5/32, 7/32, 9/32, 11/32, 13/32, 15/32, 17/32, 19/32, 21/32, 23/32, 25/32, 27/32, 7/8, 1].map(interpolateSpring);
+        const width = 20;
+        const xPoints = [0, 0, width, -width, width, -width, width, -width,width, -width, width, -width, width, -width, 0, 0];
+        for (let i=0; i<=xPoints.length - 1; i++) {
+            p.line(xPoints[i], yPoints[i], xPoints[i+1], yPoints[i+1])
+        }
+        // p.line(...wall, ...springEnd);
+
+        p.stroke(PRIMARY_COLOR);
+        p.strokeWeight(20);
+        p.point(...springEnd);
     }
 
 
