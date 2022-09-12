@@ -1,20 +1,32 @@
+/* 
+* STATE SPACE
+* Grid of angle vs. velocity depicting the current state, along with a slope field. 
+* Illustrates past states as a comet or trail.
+* Allows a user to interact with the state (click to set initial state)
+*/
+
 import React, {useState} from 'react';
 import Sketch from 'react-p5';
 import BottomRowSpan from '../templates/BottomRowSpan';
 
+// TODO: make this specific to each simulation
 const SLOPE_SCALE_FACTOR = 25;
 
+// TODO: Put this in constants.js
 const interpolate = (val, lowerInitial, upperInitial, lowerFinal, upperFinal) => {
   const decimal = (val - lowerInitial) / (upperInitial - lowerInitial);
   return (decimal < 0 || decimal > 1) ? null : (decimal * (upperFinal - lowerFinal) + lowerFinal);
 };
-const totalCanvasSize = 130;
+
+// allow 100 pixels for actual grid, 30 for padding and labels
+const TOTAL_CANVAS_SIZE = 130;
 
 
 
 export default function StateSpace(props) {
   const [trailStyle, setTrailStyle] = useState('comet');
 
+  // set constants based on states, theme, simulation data, etc
   const state = props.state;
   const pastStates = props.pastStates;
   const gridProps = props.gridProps;
@@ -22,6 +34,8 @@ export default function StateSpace(props) {
   const xVar = gridProps.variables.x;
   const yVar = gridProps.variables.y;
 
+  // TODO: rename these helper functions
+  // different for x and y in order to scale the y axis positively in the upward direction
   const getX = xValue => interpolate(xValue, gridProps.limits.x[0], gridProps.limits.x[1], -100, 100);
   const getY = xValue => interpolate(xValue, gridProps.limits.y[1], gridProps.limits.y[0],  -100, 100);
   const getXVal = x => interpolate(x, -100, 100, gridProps.limits['x'][0], gridProps.limits['x'][1]);
@@ -31,39 +45,47 @@ export default function StateSpace(props) {
     const y = getY(point[1]);
     return (x != null & y != null) ? [x, y] : null;
   }
+
+  // initialScaling: resets the coordinate system
   const initialScaling = (p) => {
     p.translate(p.width / 2, p.height / 2);
-    p.scale(p.width / (totalCanvasSize * 2));
+    p.scale(p.width / (TOTAL_CANVAS_SIZE * 2));
     p.background(props.isDark ? "#1F1E27" : 255);
   }
-  const drawGrid = (p) => {
+
+  // drawGridBorder: draws the outline of the grid
+  const drawGridBorder = (p) => {
     p.stroke(isDark ? 255 : 0);
     p.fill(isDark ? "#1F1E27" : 255);
     p.strokeWeight(0.2);
     p.rect(-100, -100, 200, 200);
   }
-  function tickMark(p, val, isVertical) {
+
+  // tickMark: draws and labels a tick mark
+  function tickMark(p, val, isVertical) { // isVertical: true if in y-direction, false if in x-direction
     const scaledVal = (isVertical) ? getX(val) : getY(val);
-    if (null == scaledVal) return;
-    if (isVertical) {
+    if (null == scaledVal) return; // disregard if out of bounds
+    if (isVertical) { // if an x-coordinate
       p.line(scaledVal, 103, scaledVal, 100);
       p.line(scaledVal, -103, scaledVal, -100);
       p.text(val, scaledVal, -106);
       p.text(val, scaledVal, 110);
-    } else {
+    } else { // if a y-coordinate
       p.line(-103, scaledVal, -100, scaledVal);
       p.line(103, scaledVal, 100, scaledVal);
       p.text(val, -108, scaledVal+2);
       p.text(val, 108, scaledVal+2);
     }
   }
+
+  // drawAllTicks: draws all the tick marks and labels
   function drawAllTicks(p) {
     p.textSize(7);
     p.textAlign(p.CENTER);
     p.fill(isDark ? 255 : 0);
     p.stroke(isDark ? 255 : 0);
     p.strokeWeight(0.2);
-    ['x', 'y'].forEach(dim => { // for both dimensions..
+    ['x', 'y'].forEach(dim => { // for both dimensions, for each tick value...
       for (let tick=gridProps.origin[dim]; tick<gridProps.limits[dim][1]; tick+=gridProps.ticks[dim]) {
         tickMark(p, tick, dim === 'x');
       }
@@ -73,6 +95,8 @@ export default function StateSpace(props) {
     })
     
   }
+
+  // drawArrow: draws one arrow on the slope field
   function drawArrow(p, xVal, yVal) {
 
     // new modifiable state
@@ -80,7 +104,7 @@ export default function StateSpace(props) {
     newState[xVar] = xVal;
     newState[yVar] = yVal;
   
-    // calculations
+    // derivative calculations
     const dx = props.derivatives[xVar](newState);
     const dy = props.derivatives[yVar](newState);
     const angle = Math.atan(dy/dx);
@@ -110,7 +134,8 @@ export default function StateSpace(props) {
     p.pop();
   }
   
-  function drawSlopes(p) {
+  // drawSlopeField: draws the entire slope field
+  function drawSlopeField(p) {
     p.strokeWeight(1);
     p.stroke(isDark ? 255 : 0);
     for (let x=-90; x<=90; x+=10) {
@@ -120,9 +145,10 @@ export default function StateSpace(props) {
     }
   }
 
+  // drawComet: draws a comet representing the last 50 states
   function drawComet(p) {
-    const pastStatePoints = pastStates.slice(-50).map(state => {
-      const scale = Math.exp(2 * (state.time - props.state.time));
+    const pastStatePoints = pastStates.slice(-50).map(state => { // select last 50 states
+      const scale = Math.exp(2 * (state.time - props.state.time)); // scale down size of comet exponentially
       const point = getPoint([state[xVar], state[yVar]]);
       return {scale: scale, point: point};
     }).filter(pastState => pastState.point != null);
@@ -131,13 +157,13 @@ export default function StateSpace(props) {
     [{color: isDark ? "#1F1E27" : 255, size: 9}, {color:"#0091ff", size: 5}].forEach(trail => {
       p.stroke(trail.color);
       pastStatePoints.forEach(pastState => {
-
         p.strokeWeight(trail.size * pastState.scale);
         p.point(...pastState.point);
       })
     })
   }
 
+  // drawPath: draws all past states still saved as constant-sized points
   function drawPath(p) {
     const pastStatePoints = pastStates.map(
       state => getPoint([state[xVar], state[yVar]])
@@ -149,6 +175,8 @@ export default function StateSpace(props) {
     })
   }
 
+  // drawState: draws the current state as a point in the theme color
+  // TODO: make this vary with the theme color from constants.js
   function drawState(p) {
     // draw current state shadow
     const currentPoint = getPoint([props.state[xVar], props.state[yVar]]);
@@ -171,32 +199,39 @@ export default function StateSpace(props) {
       p.strokeWeight(5);
       p.point(...currentPoint);
     }
-
         
   }
 
+  // drawLabels: draws y- and x-axis labels
   const drawLabels = (p) => {
+    // x-axis label
     p.noStroke(0);
     p.textSize(9);
     p.text(gridProps.labels.x, 0, 125);
 
+    // y-axis label
     p.push();
     p.rotate(-p.HALF_PI);
     p.text(gridProps.labels.y, 0, -120);
     p.pop();
-
   }
 
+  // setup: runs before the first draw
   const setup = (p, canvasParentRef) => {
     const c = p.createCanvas(460, 460).parent(canvasParentRef);
-    p.pixelDensity(4);
+    p.pixelDensity(4); // can afford higher pixel density for 2D canvas
     p.textFont('Alegreya');
     
+    // handle click to set initial state and reset past states
     c.mouseClicked(e => {
+      // compute canvas's pixel value of the click location given the transformations applied
+      // in initialScaling()
       const scaledPosition = [e.offsetX - p.width / 2, e.offsetY - p.width / 2].map(
-        val => val * (totalCanvasSize * 2) / p.width);
+        val => val * (TOTAL_CANVAS_SIZE * 2) / p.width);
+      // compute the state value of the click location
       const stateValues = {x: getXVal(scaledPosition[0]), y: getYVal(scaledPosition[1])}
 
+      // if not out of bounds of the grid, reset state and past states
       if (stateValues.x != null && stateValues.y != null) {
         state.time = 0;
         state[gridProps.initialVariables.x] = stateValues.x;
@@ -208,11 +243,12 @@ export default function StateSpace(props) {
     
   }
 
+  // draw: runs every frame
   const draw = (p) => {
     initialScaling(p);
-    drawGrid(p);
+    drawGridBorder(p);
     drawAllTicks(p);
-    drawSlopes(p);
+    drawSlopeField(p);
     drawState(p);
     drawLabels(p);
   }
