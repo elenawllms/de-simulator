@@ -2,79 +2,110 @@ import { rk4 } from '../../constants.js';
 import PendulumVis from '../visualizations/PendulumVis.js';
 var Latex = require('react-latex');
 
+// stuff to pull out into other files
+const h = 0.01;
 
-const derivatives = {angle: (state) => state.velocity, 
-    velocity: (state) => (-9.8 * Math.sin(state.angle) / state.length) 
-                        - (state.damping * state.velocity) 
-                        + state.force * Math.cos(state.forcingFrequency * state.time)};
+class Parameter {
+    /**
+     * Initializes a parameter, which includes constants and state variables.
+     * @param {string} displayName 
+     * @param {number} min 
+     * @param {number} max 
+     * @param {number} defaultValue 
+     * @param {string} unit 
+     * @param {string} symbol 
+     */
+    constructor(displayName, min, max, defaultValue, unit, symbol) {
+        Object.assign(this, {displayName, min, max, defaultValue, unit, symbol});
+    }
+}
+
+class StateVar extends Parameter {
+    /**
+ * 
+ * @param {string} color 
+ * @param {object => number} derivative 
+ * @param {string} displayName
+ * @param {number} min
+ * @param {number} max
+ * @param {number} defaultValue
+ * @param {string} unit
+ * @param {string} symbol
+ * @param {number => number} postProcess
+ */
+    constructor(displayName, min, max, defaultValue, unit, symbol, color, postProcess) {
+        super(displayName, min, max, defaultValue, unit, symbol);
+        this.color = color;
+        this.postProcess = postProcess; // anything like angle needs to be within -pi and pi, function of 
+    }
+}
 
 
-const defaultState = {
-    time: 0,
-    initialAngle: 3, 
-    initialVelocity: 3, 
-    angle: 3, 
-    velocity: 3, 
-    damping: 0.2, 
-    length: 1.5,
-    force: 1,
-    forcingFrequency: 1
+// stuff specific to this simulation
+
+const derivatives = {
+    time: (state, parameters) => 1,
+    angle: (state, parameters) => state.velocity, 
+    velocity: (state, parameters) => (-9.8 * Math.sin(state.angle) / parameters.length) 
+                        - (parameters.damping * state.velocity) 
+                        + parameters.force * Math.cos(parameters.forcingFrequency * state.time)};
+                        
+
+// generic step function
+const step = (state, parameters) => {
+    const newState = rk4(state, parameters, derivatives,Object.keys(stateVars), h);
+    Object.keys(stateVars).forEach(v => newState[v] = stateVars[v].postProcess(newState[v]));
+    return newState;
+}
+
+
+const normalizeAngle = (angle) => angle + (angle <= -Math.PI ? 2 * Math.PI : angle >= Math.PI ? -2 * Math.PI : 0);
+
+const stateVars = {
+    time: new StateVar('Time', 0, 100, 0, 's', 't', 'black', (x) => x),
+    angle: new StateVar('Angle', -Math.PI, Math.PI, Math.PI / 2, 'rad', '\\theta', 'blue', normalizeAngle),
+    velocity: new StateVar('Velocity', -10, 10, 0, 'rad/s', '\\dot{\\theta}', 'red', (x) => x),
+}
+
+const parameters = {
+    length: new Parameter('Length', 0.1, 2, 1, 'm', 'l'),
+    damping: new Parameter('Damping', 0, 1, 0.1, '', '\\gamma'),
+    force: new Parameter('Force', 0, 1, 0.5, 'N', 'F'),
+    forcingFrequency: new Parameter('Forcing Frequency', 0, 10, 1, 'Hz', '\\omega'),
+}
+
+const gridVariables = {
+    x: "angle", y: "velocity"
 }
 
 const stateSpaceProps = {
-    labels: {x: 'Angle', y: 'Velocity'},
-    units: {x: 'rad', y: 'rad/s'},
-    variables: {x: 'angle', y: 'velocity'},
-    initialVariables: {x: 'initialAngle', y: 'initialVelocity'},
     limits: {x: [-3.5, 3.5], y: [-10, 10]},
     ticks: {x: 1, y: 3},
     origin: {x: 0, y: 0},
 }
 
 const energyDiagramProps = {
-    variables: {x: 'angle', y: 'velocity'},
-    labels: {x: "Angle", y: "Velocity", z: 'Energy'},
-    limits: {x: [-3.5, 3.5], y: [-10, 10], z: [-30, 50]},
-    units: {x: "rad", y: "rad/s", z: "J"}
+    limits: {x: [-3.5, 3.5], y: [-10, 10], z: [-30, 50]}
 }
 
-const readoutVals = state => [
-    {label: 'Angle', value: state.angle, color: "#a31733", units: "rad"},
-    {label: 'Velocity', value: state.velocity, color: "#38a317", units: "rad/s"},
-    {label: 'Acceleration', value: derivatives.velocity(state), color: "#d1650d", units: "rad/s^2"}
-]
-
-const readoutProps =  {
+const timeSeriesProps =  {
     yLimits: [-10, 10],
-    yTicks: 3
+    yTicks: 3,
+    vals: (state, parameters) => ([
+        {label: 'Angle', value: state.angle, color: "#a31733", units: "rad"},
+        {label: 'Velocity', value: state.velocity, color: "#38a317", units: "rad/s"},
+        {label: 'Acceleration', value: derivatives.velocity(state, parameters), color: "#d1650d", units: "rad/s^2"}
+    ])
 }
 
-
-const options = [
-    {displayName: 'Initial Angle', symbol: <Latex>$\theta_0$</Latex>, min: -3.14, max: 3.14, units: 'rad', name: "initialAngle"},
-    {displayName: 'Initial Velocity', symbol: <Latex>$\theta_0 '$</Latex>, min: -5, max: 5, units: 'rad/s', name: "initialVelocity"},
-    {displayName: 'Damping', symbol: <Latex>$c$</Latex>, min: 0, max: 2, units: 'kg/s', name: "damping"},
-    {displayName: 'Length', symbol: <Latex>$l$</Latex>, min: 1, max: 1.5, units: 'm', name: "length"},
-    {displayName: 'Force', symbol: <Latex>$F_0$</Latex>, min: 0, max: 2, units: 'N', name: "force"},
-    {displayName: 'Forcing Freq.', symbol: <Latex>$\Omega$</Latex>, min: 0.25, max: 4, units: 'rad/s', name: "forcingFrequency"}
-];
-
-const h = 0.01;
-
-const incrementState = (state) => {
-    const newState = rk4(state, derivatives, ["angle", "velocity"], h);
-    newState.angle += (newState.angle <= -Math.PI ? 2 * Math.PI : newState.angle >= Math.PI ? -2 * Math.PI : 0)
-    return newState;
-};
-
-const getEnergyFromState = (state) => (
+const energyFn  = (state, parameters) => (
     0.5 * Math.pow(state.velocity, 2) 
-    + 0.5 * Math.pow(state.force * state.forcingFrequency * Math.sin(state.forcingFrequency * state.time), 2)
-    + 9.8 * state.force * Math.cos(state.forcingFrequency * state.time) 
-    - 9.8 * Math.cos(state.angle) / state.length
+    + 0.5 * Math.pow(parameters.force * parameters.forcingFrequency * Math.sin(parameters.forcingFrequency * state.time), 2)
+    + 9.8 * parameters.force * Math.cos(parameters.forcingFrequency * state.time) 
+    - 9.8 * Math.cos(state.angle) / parameters.length
 )
 
-const visualization = (state, theme) => <PendulumVis state={state} theme={theme}/>;
+const visualization = (state, parameters, theme) => <PendulumVis state={state} parameters={parameters} theme={theme}/>;
 
 const info = <>
     <h1>Pendulum</h1>
@@ -91,15 +122,15 @@ const info = <>
 
 export const PendulumData = {
     title: "Pendulum",
-    defaultState: defaultState,
+    stateVars: stateVars,
+    parameters: parameters,
     stateSpaceProps: stateSpaceProps,
-    energyDiagramProps: energyDiagramProps,
-    readoutVals: readoutVals,
-    readoutProps: readoutProps,
-    options: options,
-    incrementState: incrementState,
-    getEnergyFromState: getEnergyFromState,
+    gridVariables: gridVariables,
     derivatives: derivatives,
+    stepFn: step,
+    energyFn: energyFn,
+    energyDiagramProps: energyDiagramProps,
+    timeSeriesProps: timeSeriesProps,
     info: info,
     visualization: visualization
 }

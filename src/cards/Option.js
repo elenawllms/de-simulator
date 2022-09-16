@@ -1,16 +1,20 @@
+/**
+ * OPTION.JS
+ * If you touch this code it breaks. You have been warned.
+ */
+
 import React, {useState} from 'react'
 
 
 export default function Option(props) {
 
-    const valueName = props.option.name;
     const updateValue = (newValue) => {
         const newState = {...props.state};
-        newState[valueName] = newValue;
+        newState[props.name] = newValue;
         props.setState(newState);
     }
 
-    const [value, setValue] = useState(Number(props.state[valueName].toFixed(2)));
+    const [value, setValue] = useState(Number(props.state[props.name].toFixed(2)));
 
 
     const handleSliderChange = (e) => {
@@ -25,10 +29,10 @@ export default function Option(props) {
 
     const handleBlur = () => {
         var revisedValue = Number(value.toFixed(2));
-        if (value < props.option.min) {
-            revisedValue = props.option.min;
-        } else if (value > props.option.max) {
-            revisedValue = props.option.max;
+        if (value < props.vars.min) {
+            revisedValue = props.min;
+        } else if (value > props.vars.max) {
+            revisedValue = props.vars.max;
         }
         setValue(revisedValue);
         updateValue(revisedValue);
@@ -38,22 +42,22 @@ export default function Option(props) {
     return (
         <div className="option">
             <div className="option-banner">
-                <span className="option-name">{props.option.displayName} (<span style={{fontSize: 13}}>{props.option.symbol}</span>)</span>
+                <span className="option-name">{props.vars.displayName} (<span style={{fontSize: 13}}>{props.vars.symbol}</span>)</span>
                 <span className="option-value">
                 <input type="number" onWheel={(e) => e.target.blur()}
                     value={value}
                     size="small"
                     onChange={handleInputChange}
                     onBlur={handleBlur}
-                /> {props.option.units}
+                /> {props.vars.units}
                 </span>
             </div>
             
             <input type="range"
                 value={value} 
                 onChange={handleSliderChange}
-                min={props.option.min} 
-                max={props.option.max}
+                min={props.vars.min} 
+                max={props.vars.max}
                 step={0.01}/>
 
             
