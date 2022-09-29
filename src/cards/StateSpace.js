@@ -240,7 +240,9 @@ export default function StateSpace(props) {
         newState[xVar] = stateValues.x;
         newState[yVar] = stateValues.y;
         props.setState(newState);
-        props.setInitialState(newState);
+        const newStateWithoutTime = {...newState};
+        delete newStateWithoutTime.time;
+        props.setInitialState(newStateWithoutTime);
         props.reset();
       }
     })

@@ -12,7 +12,11 @@ export default function Pendulum(props) {
 
   // set initial state of pendulum system
   const [state, setState] = useState(Object.fromEntries(Object.entries(props.data.stateVars).map(([key, value]) => [key, value.defaultValue]))); // TODO: there has to be a better way to do this
-  const [initialState, setInitialState] = useState(state);
+
+  // set initialState variable
+  const stateWithoutTime = {...state};
+  delete stateWithoutTime.time;
+  const [initialState, setInitialState] = useState(stateWithoutTime);
   // set parameters of system
   const [parameters, setParameters] = useState(Object.fromEntries(Object.entries(props.data.parameters).map(([key, value]) => [key, value.defaultValue]))) // TODO: again, there has to be a better way to do this
   // eslint-disable-next-line
@@ -31,8 +35,8 @@ export default function Pendulum(props) {
   // update the pendulum's state regularly based on a window interval
   const play = () => {
     const intervalId = setInterval(() => {
-      setState(state => ({...props.data.stepFn(state, parameters)}));
-    }, 10); // TODO: make this a constant
+      setState(state => ({...props.data.stepFn(state, {...parameters})}));
+    }, 10); // TODO: make the time of the interval a constant
     setClock(intervalId);
   }
 
@@ -48,10 +52,20 @@ export default function Pendulum(props) {
     } else {play();}
   }
 
+  // sets new interval when parameters change 
+  // (otherwise while playing it doesn't take changes into account)
+  useEffect(() => {
+    if (clock) {
+      clearInterval(clock);
+      play();
+    }
+    // eslint-disable-next-line
+  }, [parameters])
+
   // on reset, update t=0, and set angle and velocity to their initial states
   const reset = () => {
     state.time = 0;
-    Object.keys(state).forEach(v => state[v] = initialState[v]);
+    Object.keys(initialState).forEach(v => state[v] = initialState[v]);
     setState(state => ({...state}));
     setPastStates([]);
   }

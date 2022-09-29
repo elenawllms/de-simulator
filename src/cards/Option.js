@@ -4,7 +4,7 @@
  */
 
 import React, {useState} from 'react'
-
+var Latex = require('react-latex');
 
 export default function Option(props) {
 
@@ -42,7 +42,9 @@ export default function Option(props) {
     return (
         <div className="option">
             <div className="option-banner">
-                <span className="option-name">{props.vars.displayName} (<span style={{fontSize: 13}}>{props.vars.symbol}</span>)</span>
+                <span className="option-name">{props.vars.displayName} (<span style={{fontSize: 13}}>
+                    <Latex>{`$${props.vars.symbol}$`}</Latex>
+                    </span>)</span>
                 <span className="option-value">
                 <input type="number" onWheel={(e) => e.target.blur()}
                     value={value}
