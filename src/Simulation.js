@@ -8,9 +8,9 @@ import React, {useState, useEffect} from 'react';
 import NavBar from './NavBar.js';
 import Panel from './Panel.js';
 
-export default function Pendulum(props) {
+export default function Simulation(props) {
 
-  // set initial state of pendulum system
+  // set initial state of simulation system
   const [state, setState] = useState(Object.fromEntries(Object.entries(props.data.stateVars).map(([key, value]) => [key, value.defaultValue]))); // TODO: there has to be a better way to do this
 
   // set initialState variable

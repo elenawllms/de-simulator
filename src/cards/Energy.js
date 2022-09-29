@@ -30,9 +30,16 @@ export default function Energy(props) {
   // set up constants from props
   const isDark = props.isDark;
   const gridProps = props.gridProps;
+  // limits: {x: [-3.5, 3.5], y: [-10, 10], z: [-30, 50]}
+
+  const parameters = props.parameters;
   const energy = props.energy;
-  const state = props.state;
-  const vars = props.gridProps.variables;
+  // energy(state, parameters)
+
+  const stateVars = props.stateVars;
+
+  const state = props.state; // actual array
+  const vars = props.gridVars;
 
   // Functions that convert between grid coordinates and pixel values
   // TODO: give these better names
@@ -72,7 +79,7 @@ export default function Energy(props) {
         p.push();
         newState[vars.x] = pixelToVal(x, 'x');
         newState[vars.y] = pixelToVal(y, 'y');
-        const z = valToPixel(energy(newState), 'z'); // calculate energy
+        const z = valToPixel(energy(newState, parameters), 'z'); // calculate energy
         if (z === null) continue; // ignore out-of-bounds points
 
         const hue = (p.int(z * 2) + 320) % 360; // color based on energy value
@@ -91,7 +98,7 @@ export default function Energy(props) {
 
     // compute position in pixels and draw as a sphere
     const xyPixelVal = ['x', 'y'].map(dim => valToPixel(state[vars[dim]], dim));
-    const energyPixelVal = valToPixel(energy(state), 'z');
+    const energyPixelVal = valToPixel(energy(state, parameters), 'z');
     p.translate(...xyPixelVal, energyPixelVal);
     p.sphere(4);
 
@@ -128,9 +135,9 @@ export default function Energy(props) {
         <Sketch setup={setup} draw={draw}></Sketch>
       </div>
       <div className='bottomRow'>
-        <BottomRowSpan label={gridProps.labels.x} value={state[vars.x]} units={gridProps.units.x}/>
-        <BottomRowSpan label={gridProps.labels.y} value={state[vars.y]} units={gridProps.units.y}/>
-        <BottomRowSpan label={gridProps.labels.z} value={energy(state)} units={gridProps.units.z}/>
+        <BottomRowSpan label={stateVars[vars.x].displayName} value={state[vars.x]} units={stateVars[vars.x].unit}/>
+        <BottomRowSpan label={stateVars[vars.y].displayName} value={state[vars.y]} units={stateVars[vars.y].unit}/>
+        <BottomRowSpan label={"Energy"} value={energy(state, parameters)} units={"J"}/>
       </div>
     </div>
   )

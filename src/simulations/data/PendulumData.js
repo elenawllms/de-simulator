@@ -22,17 +22,17 @@ class Parameter {
 
 class StateVar extends Parameter {
     /**
- * 
- * @param {string} color 
- * @param {object => number} derivative 
- * @param {string} displayName
- * @param {number} min
- * @param {number} max
- * @param {number} defaultValue
- * @param {string} unit
- * @param {string} symbol
- * @param {number => number} postProcess
- */
+     * 
+     * @param {string} color 
+     * @param {object => number} derivative 
+     * @param {string} displayName
+     * @param {number} min
+     * @param {number} max
+     * @param {number} defaultValue
+     * @param {string} unit
+     * @param {string} symbol
+     * @param {number => number} postProcess
+     */
     constructor(displayName, min, max, defaultValue, unit, symbol, color, postProcess) {
         super(displayName, min, max, defaultValue, unit, symbol);
         this.color = color;

@@ -52,9 +52,12 @@ export default function Panel(props) {
       key='Energy Diagram' 
       label='Energy Diagram' 
       state={props.state} 
+      parameters={props.parameters}
       energy={props.data.energyFn}
       isDark={props.theme === 'dark'}
-      gridProps={props.data.energyDiagramProps}/>,
+      gridVars={props.data.gridVariables}
+      gridProps={props.data.energyDiagramProps}
+      stateVars={props.data.stateVars}/>,
 
     <Readout 
       key='Time Series' 
