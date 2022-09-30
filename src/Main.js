@@ -22,6 +22,13 @@ export default function Main() {
             <div className='desc'>Spring</div>
           </div>
         </Link>
+
+        <Link to="/brusselator">
+          <div className='card'>
+            <img src={require('./simulations/brusselator/cover.png')} alt=""/>
+            <div className='desc'>Brusselator</div>
+          </div>
+        </Link>
         
       </div>
     </div>

@@ -30,7 +30,7 @@ export default function BrusselatorVis(props) {
         p.triangle(0, -90, -100, 100, 100, 100);
 
         // border of test tube
-        p.stroke(0);
+        p.stroke(isDark ? 230: 0);
         p.strokeWeight(5);
         // sides of the top
         p.line(-30, -100, -30, -30);
