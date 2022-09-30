@@ -1,5 +1,5 @@
 import { rk4 } from '../../constants.js';
-import SpringVis from '../visualizations/SpringVis.js';
+import SpringVis from './animation.js';
 var Latex = require('react-latex');
 
 

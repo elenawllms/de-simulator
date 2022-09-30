@@ -11,14 +11,14 @@ export default function Main() {
       <div className='cardLinks'>
         <Link to="/pendulum">
           <div className='card'>
-            <img src={require('./simulations/coverImages/pendulum.png')} alt=""/>
+            <img src={require('./simulations/pendulum/cover.png')} alt=""/>
             <div className='desc'>Pendulum</div>
           </div>
           
         </Link>
         <Link to="/spring">
           <div className='card'>
-            <img src={require('./simulations/coverImages/spring.jpg')} alt=""/>
+            <img src={require('./simulations/spring/cover.jpg')} alt=""/>
             <div className='desc'>Spring</div>
           </div>
         </Link>

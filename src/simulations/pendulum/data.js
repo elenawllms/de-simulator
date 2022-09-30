@@ -1,9 +1,8 @@
-import PendulumVis from '../visualizations/PendulumVis.js';
-import {Parameter, StateVar, createStepFunction} from './Variables.js';
-var Latex = require('react-latex');
+import PendulumVis from './animation.js';
+import {Parameter, StateVar, createStepFunction} from '../Variables.js';
+import info from './info.js';
 
 const normalizeAngle = (angle) => angle + (angle <= -Math.PI ? 2 * Math.PI : angle >= Math.PI ? -2 * Math.PI : 0);
-
 
 const stateVars = {
     time: new StateVar('Time', 0, 100, 0, 's', 't', 'black', (x) => x),
@@ -17,14 +16,6 @@ const derivatives = {
     velocity: (state, parameters) => (-9.8 * Math.sin(state.angle) / parameters.length) 
                         - (parameters.damping * state.velocity) 
                         + parameters.force * Math.cos(parameters.forcingFrequency * state.time)};
-                        
-
-// generic step function
-// const step = (state, parameters) => {
-//     const newState = rk4(state, parameters, derivatives,Object.keys(stateVars), h);
-//     Object.keys(stateVars).forEach(v => newState[v] = stateVars[v].postProcess(newState[v]));
-//     return newState;
-// }
 
 const step = createStepFunction(stateVars, derivatives);
 
@@ -59,26 +50,29 @@ const timeSeriesProps =  {
     ])
 }
 
-const energyFn  = (state, parameters) => (
+/**
+ * Finds the energy of the system as a function of the current state and
+ * the constants of the system.
+ * @param {Object} state - current state as object including time
+ * @param {Object} parameters - current constants of the system
+ * @returns energy value, usually in Joules, of the current state of the system
+ */
+const energyFn = (state, parameters) => (
     0.5 * Math.pow(state.velocity, 2) 
     + 0.5 * Math.pow(parameters.force * parameters.forcingFrequency * Math.sin(parameters.forcingFrequency * state.time), 2)
     + 9.8 * parameters.force * Math.cos(parameters.forcingFrequency * state.time) 
     - 9.8 * Math.cos(state.angle) / parameters.length
 )
 
+/**
+ * Creates XML Element containing a visualization given the current state,
+ * constants and theme.
+ * @param {Object} state 
+ * @param {Object} parameters 
+ * @param {"light" | "dark"} theme 
+ * @returns 
+ */
 const visualization = (state, parameters, theme) => <PendulumVis state={state} parameters={parameters} theme={theme}/>;
-
-const info = <>
-    <h1>Pendulum</h1>
-    This simulation models a pendulum, allowing for control of initial conditions, pendulum length, and damping.
-    The pendulum obeys the formula
-    <Latex displayMode={true}>
-        $ \theta '' + c\theta ' + \lambda\theta = F_0 \cos \Omega t $
-    </Latex>
-    We approximate the pendulum using 
-    the <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods">Runge-Kutta</a> 4th order method.
-</>;
-
 
 
 export const PendulumData = {

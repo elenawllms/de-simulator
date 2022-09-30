@@ -10,8 +10,8 @@ import './App.css';
 import Simulation from './Simulation.js';
 import {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { PendulumData } from './simulations/data/PendulumData';
-import { SpringData } from './simulations/data/SpringData';
+import { PendulumData } from './simulations/pendulum/data';
+import { SpringData } from './simulations/spring/data';
 import Main from './Main.js';
 
 
