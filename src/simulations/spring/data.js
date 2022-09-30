@@ -1,95 +1,96 @@
-import { rk4 } from '../../constants.js';
 import SpringVis from './animation.js';
-var Latex = require('react-latex');
+import {Parameter, StateVar, createStepFunction} from '../Variables.js';
+import info from './info.js';
+
+const stateVars = {
+    // the time variable doesn't quite work in this data structure... but that's a later problem
+    time: new StateVar('Time', 0, 100, 0, 's', 't', 'black', x=>x),
+    displacement: new StateVar('Displacement', -5, 5, 0, 'm', 'x', 'blue', x=>x),
+    velocity: new StateVar('Velocity', -10, 10, 0, 'm/s', '\\dot{x}', 'red', x=>x),
+}
+
+const parameters = {
+    mass: new Parameter('Mass', 0.1, 2, 1, 'kg', 'm'),
+    damping: new Parameter('Damping', 0, 1, 0.1, 'kg/s', 'b'),
+    stiffness: new Parameter('Spring Stiffness', 1, 10, 5, 'N/m', 'k')
+}
+
+const derivatives = {
+    time: (state, parameters) => 1,
+    displacement: (state, parameters) => state.velocity, 
+    velocity: (state, parameters) => (
+        -(parameters.damping * state.velocity / parameters.mass)
+        - (parameters.stiffness * state.displacement / parameters.mass)
+    )};
+
+const step = createStepFunction(stateVars, derivatives);
 
 
-
-const derivatives = {displacement: (state) => state.velocity, 
-    velocity: (state) => (-1 * state.damping / state.mass) * state.velocity
-                        - (state.springConstant / state.mass) * state.displacement};
-
-
-const defaultState = {
-    time: 0,
-    initialDisplacement: 1, 
-    initialVelocity: 0, 
-    displacement: 1, 
-    velocity: 0, 
-    mass: 3,
-    springConstant: 10,
-    restLength: 4,
-    damping: 0.2,
+const gridVariables = {
+    x: "displacement", y: "velocity"
 }
 
 const stateSpaceProps = {
-    labels: {x: 'Displacement', y: 'Velocity'},
-    units: {x: 'm', y: 'm/s'},
-    variables: {x: 'displacement', y: 'velocity'},
-    initialVariables: {x: 'initialDisplacement', y: 'initialVelocity'},
     limits: {x: [-3.5, 3.5], y: [-10, 10]},
     ticks: {x: 1, y: 3},
     origin: {x: 0, y: 0},
 }
 
 const energyDiagramProps = {
-    variables: {x: 'displacement', y: 'velocity'},
-    labels: {x: "Displacement", y: "Velocity", z: 'Energy'},
-    limits: {x: [-3.5, 3.5], y: [-10, 10], z: [0, 100]},
-    units: {x: "m", y: "m/s", z: "J"}
+    limits: {x: [-3.5, 3.5], y: [-10, 10], z: [-30, 50]}
 }
 
-
-const readoutVals = state => [
-    {label: 'Displacement', value: state.displacement, color: "#a31733", units: "m"},
-    {label: 'Velocity', value: state.velocity, color: "#38a317", units: "m/s"},
-    {label: 'Acceleration', value: derivatives.velocity(state), color: "#d1650d", units: "m/s^2"}
-]
-
-const readoutProps =  {
+const timeSeriesProps =  {
     yLimits: [-10, 10],
-    yTicks: 3
+    yTicks: 3,
+    vals: (state, parameters) => ([
+        {label: 'Displacement', value: state.displacement, color: "#a31733", units: "rad"},
+        {label: 'Velocity', value: state.velocity, color: "#38a317", units: "rad/s"},
+        {label: 'Acceleration', value: derivatives.velocity(state, parameters), color: "#d1650d", units: "rad/s^2"}
+    ])
 }
 
-const options = [
-    {displayName: 'Initial Displacement', symbol: <Latex>$x_0$</Latex>, min: -3.14, max: 3.14, units: 'm', name: "initialDisplacement"},
-    {displayName: 'Initial Velocity', symbol: <Latex>$x_0 '$</Latex>, min: -5, max: 5, units: 'm/s', name: "initialVelocity"},
-    {displayName: 'Mass', symbol: <Latex>$m$</Latex>, min: 1, max: 5, units: 'kg', name: "mass"},
-    {displayName: 'Damping', symbol: <Latex>$b$</Latex>, min: 0, max: 2, units: 'kg/s', name: "damping"},
-    {displayName: 'Spring Constant', symbol: <Latex>$k$</Latex>, min: 5, max: 20, units: 'N/m', name: "springConstant"},
-    {displayName: 'Rest Length', symbol: <Latex>$l$</Latex>, min: 3, max: 5, units: 'm', name: "restLength"},
-
-];
-
-const h = 0.01;
-
-const incrementState = (state) => {
-    const newState = rk4(state, derivatives, ["displacement", "velocity"], h);
-    return newState;
-};
-
-const visualization = (state, theme) => <SpringVis state={state} theme={theme}/>;
-
-const getEnergyFromState = (state) => ( // edit this
-    0.5 * state.springConstant * Math.pow(state.displacement, 2) // 1/2 kx^2
-    + 0.5 * state.mass * Math.pow(state.velocity, 2) // 1/2 mv^2
+/**
+ * Finds the energy of the system as a function of the current state and
+ * the constants of the system.
+ * @param {Object} state - current state as object including time
+ * @param {Object} parameters - current constants of the system
+ * @returns energy value, usually in Joules, of the current state of the system
+ */
+const energyFn = (state, parameters) => (
+    // (parameters.mass * 9.8 * state.displacement) // gravitational PE mgx
+    + (0.5 * parameters.stiffness * Math.pow(state.displacement, 2)) // spring PE kx^2 /2
+    + (0.5 * parameters.mass * Math.pow(state.velocity, 2)) // kinetic energy mv^2 /2
 )
 
-const info = <>
-    <h1>Spring</h1>
-    <p>It's a spring</p>
-</>
+
+const visualizationScale = 1;
+
+/**
+ * Creates XML Element containing a visualization given the current state,
+ * constants and theme.
+ * @param {Object} state 
+ * @param {Object} parameters 
+ * @param {"light" | "dark"} theme 
+ * @returns 
+ */
+const visualization = (state, parameters, theme) => <SpringVis state={state} parameters={parameters} theme={theme} scale={visualizationScale}/>;
+
 
 export const SpringData = {
     title: "Spring",
-    defaultState: defaultState,
+    stateVars: stateVars,
+    parameters: parameters,
     stateSpaceProps: stateSpaceProps,
-    energyDiagramProps: energyDiagramProps,
-    readoutVals: readoutVals,
-    readoutProps: readoutProps,
-    options: options,
-    incrementState: incrementState,
-    getEnergyFromState: getEnergyFromState,
+    gridVariables: gridVariables,
     derivatives: derivatives,
+    stepFn: step,
+    energyFn: energyFn,
+    energyDiagramProps: energyDiagramProps,
+    timeSeriesProps: timeSeriesProps,
     info: info,
     visualization: visualization
 }
+
+
+
