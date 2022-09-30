@@ -108,9 +108,12 @@ export default function StateSpace(props) {
     newState[yVar] = yVal;
   
     // derivative calculations
+    const xWindowSize = gridProps.limits.x[1] - gridProps.limits.x[0];
+    const yWindowSize = gridProps.limits.y[1] - gridProps.limits.y[0];
+
     const dx = props.derivatives[xVar](newState, parameters);
     const dy = props.derivatives[yVar](newState, parameters);
-    const angle = Math.atan(dy/dx);
+    const angle = Math.atan((dy / yWindowSize)/(dx / xWindowSize));
     const del_x = 3 * Math.cos(angle);
     const del_y = -3 * Math.sin(angle);
     const [x, y] = getPoint([xVal, yVal]);
@@ -215,7 +218,7 @@ export default function StateSpace(props) {
     // y-axis label
     p.push();
     p.rotate(-p.HALF_PI);
-    p.text(stateVars[xVar].displayName, 0, -120);
+    p.text(stateVars[yVar].displayName, 0, -120);
     p.pop();
   }
 

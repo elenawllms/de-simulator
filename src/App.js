@@ -12,6 +12,7 @@ import {useState, useEffect} from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { PendulumData } from './simulations/pendulum/data';
 import { SpringData } from './simulations/spring/data';
+import { BrusselatorData } from './simulations/brusselator/data';
 import Main from './Main.js';
 
 
@@ -46,6 +47,8 @@ function App() {
           <Route path="/pendulum" element={<Simulation switchTheme={switchTheme} theme={theme} data={PendulumData} />} />
           {/* Spring simulation */}
           <Route path="/spring" element={<Simulation switchTheme={switchTheme} theme={theme} data={SpringData}/>} />
+          {/* Brusselator simulation */}
+          <Route path="/brusselator" element={<Simulation switchTheme={switchTheme} theme={theme} data={BrusselatorData}/>} />
         </Routes>
       </BrowserRouter>
       
