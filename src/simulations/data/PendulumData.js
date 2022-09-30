@@ -1,47 +1,15 @@
-import { rk4 } from '../../constants.js';
 import PendulumVis from '../visualizations/PendulumVis.js';
+import {Parameter, StateVar, createStepFunction} from './Variables.js';
 var Latex = require('react-latex');
 
-// stuff to pull out into other files
-const h = 0.01;
+const normalizeAngle = (angle) => angle + (angle <= -Math.PI ? 2 * Math.PI : angle >= Math.PI ? -2 * Math.PI : 0);
 
-class Parameter {
-    /**
-     * Initializes a parameter, which includes constants and state variables.
-     * @param {string} displayName 
-     * @param {number} min 
-     * @param {number} max 
-     * @param {number} defaultValue 
-     * @param {string} unit 
-     * @param {string} symbol 
-     */
-    constructor(displayName, min, max, defaultValue, unit, symbol) {
-        Object.assign(this, {displayName, min, max, defaultValue, unit, symbol});
-    }
+
+const stateVars = {
+    time: new StateVar('Time', 0, 100, 0, 's', 't', 'black', (x) => x),
+    angle: new StateVar('Angle', -Math.PI, Math.PI, Math.PI / 2, 'rad', '\\theta', 'blue', normalizeAngle),
+    velocity: new StateVar('Velocity', -10, 10, 0, 'rad/s', '\\dot{\\theta}', 'red', (x) => x),
 }
-
-class StateVar extends Parameter {
-    /**
-     * 
-     * @param {string} color 
-     * @param {object => number} derivative 
-     * @param {string} displayName
-     * @param {number} min
-     * @param {number} max
-     * @param {number} defaultValue
-     * @param {string} unit
-     * @param {string} symbol
-     * @param {number => number} postProcess
-     */
-    constructor(displayName, min, max, defaultValue, unit, symbol, color, postProcess) {
-        super(displayName, min, max, defaultValue, unit, symbol);
-        this.color = color;
-        this.postProcess = postProcess; // anything like angle needs to be within -pi and pi, function of 
-    }
-}
-
-
-// stuff specific to this simulation
 
 const derivatives = {
     time: (state, parameters) => 1,
@@ -52,20 +20,13 @@ const derivatives = {
                         
 
 // generic step function
-const step = (state, parameters) => {
-    const newState = rk4(state, parameters, derivatives,Object.keys(stateVars), h);
-    Object.keys(stateVars).forEach(v => newState[v] = stateVars[v].postProcess(newState[v]));
-    return newState;
-}
+// const step = (state, parameters) => {
+//     const newState = rk4(state, parameters, derivatives,Object.keys(stateVars), h);
+//     Object.keys(stateVars).forEach(v => newState[v] = stateVars[v].postProcess(newState[v]));
+//     return newState;
+// }
 
-
-const normalizeAngle = (angle) => angle + (angle <= -Math.PI ? 2 * Math.PI : angle >= Math.PI ? -2 * Math.PI : 0);
-
-const stateVars = {
-    time: new StateVar('Time', 0, 100, 0, 's', 't', 'black', (x) => x),
-    angle: new StateVar('Angle', -Math.PI, Math.PI, Math.PI / 2, 'rad', '\\theta', 'blue', normalizeAngle),
-    velocity: new StateVar('Velocity', -10, 10, 0, 'rad/s', '\\dot{\\theta}', 'red', (x) => x),
-}
+const step = createStepFunction(stateVars, derivatives);
 
 const parameters = {
     length: new Parameter('Length', 0.1, 2, 1, 'm', 'l'),
