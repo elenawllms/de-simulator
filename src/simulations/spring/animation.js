@@ -19,7 +19,8 @@ export default function SpringVis(props) {
     const isDark = props.theme === 'dark';
 
     const drawWall = p => {
-        p.stroke(0);
+        p.stroke(isDark ? 215: 0);
+        p.fill(isDark ? 0: 255);
         p.strokeWeight(2);
         p.rect(-WALL_WIDTH / 2, WALL_Y_POSITION - WALL_HEIGHT, WALL_WIDTH, WALL_HEIGHT);
     }
@@ -37,7 +38,7 @@ export default function SpringVis(props) {
         const bottomOfSquiggles = springBottom - springLength * (1-SQUIGGLE_FRACTION) / 2;
 
         // draw straight part
-        p.stroke(0);
+        p.stroke(isDark ? 215: 0);
         p.strokeWeight(2);
         p.line(0, WALL_Y_POSITION, 0, topOfSquiggles);
         p.line(0, springBottom, 0, bottomOfSquiggles);
