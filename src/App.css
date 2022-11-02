@@ -31,12 +31,18 @@
 /* ----- MAIN HOMEPAGE ----- */
 
 #Main {
+  min-height: 100vh;
   height: 100%;
   margin: 0;
   padding: 80px 100px;
   width: 100%;
   background: white;
+  color: black;
   align-content: center;
+}
+
+Main * {
+  color: inherit;
 }
 
 #Main h1, h2 {
@@ -54,21 +60,31 @@
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-radius: 10px;
 }
-
+/* 
 #Main .card img {
   width: 100%;
   border-radius: 10px 10px 0 0;
 
+} */
+
+#Main .card .title {
+  padding: 20px;
+  text-decoration: none;
+  color: black;
+  /* font-weight: 500; */
+  padding-bottom: 0;
 }
 
 #Main .card .desc {
   padding: 20px;
-  text-decoration: none;
+  padding-top: 0;
   color: black;
 }
 
+
 a {
   text-decoration: none;
+  color: black;
 }
 
 /* OTHER */

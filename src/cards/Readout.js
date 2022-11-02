@@ -3,7 +3,7 @@ import Sketch from 'react-p5';
 
 const axisPadding = 10;
 const xTickSize = 2;
-const timeWindow = 7;
+const timeWindow = 15;
 
 // gotta put this under constants at some point
 const interpolate = (val, lowerInitial, upperInitial, lowerFinal, upperFinal) => {

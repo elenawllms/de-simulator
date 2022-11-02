@@ -14,9 +14,13 @@ export default function Panel(props) {
   // keep track of the active tab
   const [activeTab, setActiveTab] = useState('State Space');
   // titles that go at the top of each tab
-  const tabNames = [
-    'Info', 'State Space', 'Energy Diagram', 'Time Series', 'Options'
-  ]  
+  let tabNames = ['Info', 'State Space', 'Energy Diagram', 'Time Series', 'Options'];
+  if (props.data.title === "Brusselator") {
+    tabNames = [
+      'Info', 'State Space', 'Time Series', 'Options'
+    ]  
+  }
+  
 
   // what JSX element to render for each tab
   const tabs = [

@@ -1,10 +1,10 @@
 var Latex = require('react-latex');
 
 const info = <>
-<h1>BrusselatorVis</h1>
+<h1>Brusselator</h1>
 This simulation models the Belousov-Zhabotinsky Reaction, better known as the clock reaction,
 which describes the autocatalytic oxidation of malonic acid by potassium bromate.
-The chemical system obeys the linear system:
+The chemical system obeys the equation:
 <Latex displayMode={true}>
     $ x' = a-bx+x^2y-x  $
 </Latex>

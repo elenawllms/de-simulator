@@ -1,34 +1,16 @@
 import React from 'react'
-import {Link} from 'react-router-dom';
+import FrontPageCard from './templates/FrontPageCard';
 
 export default function Main() {
   return (
     <div id="Main">
-      <h1>DE Simulations</h1>
-      <h2>Math 82: Differential Equations</h2>
-      <p>A bit of description can go here that introduces the tool and describes how to navigate it. 
-        This should probably also note that the tool is being developed and might be buggy which is unfortunate.</p>
+      <h1>Simulations of Differential Equations</h1>
+      <h2>HMC Math 82: Differential Equations</h2>
+      <p>This is a new tool to interactively simulate differential equations. It is still in development, though, so I apologize for any buggy behavior! In particular, <strong>do not view this website on a mobile phone</strong>. Ideally, view it in the browser of your computer; a tablet works too, though it might be slower with the 3D Energy Diagram tabs.</p>
       <div className='cardLinks'>
-        <Link to="/pendulum">
-          <div className='card'>
-            <img src={require('./simulations/pendulum/cover.png')} alt=""/>
-            <div className='desc'>Pendulum</div>
-          </div>
-          
-        </Link>
-        <Link to="/spring">
-          <div className='card'>
-            <img src={require('./simulations/spring/cover.jpg')} alt=""/>
-            <div className='desc'>Spring</div>
-          </div>
-        </Link>
-
-        <Link to="/brusselator">
-          <div className='card'>
-            <img src={require('./simulations/brusselator/cover.png')} alt=""/>
-            <div className='desc'>Brusselator</div>
-          </div>
-        </Link>
+        <FrontPageCard link="/pendulum" title="Pendulum" desc="Simulates a pendulum with variable length, damping, forcing, and initial angle/velocity."/>
+        <FrontPageCard link="/brusselator" title="Brusselator" desc="Simulates a version of the Belousov-Zhabotinsky reaction, an oscillating chemical system. The system either approaches a steady-state point or a limit cycle, depending on system parameters."/>
+        <FrontPageCard link="/spring" title="Spring" desc="Simulates a spring with variable mass, damping, spring stiffness, and initial displacement/velocity. Does not account for gravity (yet)."/>
         
       </div>
     </div>

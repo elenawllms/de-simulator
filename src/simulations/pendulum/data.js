@@ -6,7 +6,7 @@ const normalizeAngle = (angle) => angle + (angle <= -Math.PI ? 2 * Math.PI : ang
 
 const stateVars = {
     time: new StateVar('Time', 0, 100, 0, 's', 't', 'black', (x) => x),
-    angle: new StateVar('Angle', -Math.PI, Math.PI, Math.PI / 2, 'rad', '\\theta', 'blue', normalizeAngle),
+    angle: new StateVar('Angle', -Math.PI, Math.PI, Math.PI-0.01, 'rad', '\\theta', 'blue', normalizeAngle),
     velocity: new StateVar('Velocity', -10, 10, 0, 'rad/s', '\\dot{\\theta}', 'red', (x) => x),
 }
 
@@ -20,9 +20,9 @@ const derivatives = {
 const step = createStepFunction(stateVars, derivatives);
 
 const parameters = {
-    length: new Parameter('Length', 0.1, 2, 1, 'm', 'l'),
+    length: new Parameter('Length', 0.5, 2, 1.5, 'm', 'l'),
     damping: new Parameter('Damping', 0, 1, 0.1, '', '\\gamma'),
-    force: new Parameter('Force', 0, 1, 0.5, 'N', 'F'),
+    force: new Parameter('Force', 0, 1, 0, 'N', 'F'),
     forcingFrequency: new Parameter('Forcing Frequency', 0, 10, 1, 'Hz', '\\omega'),
 }
 

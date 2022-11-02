@@ -171,13 +171,18 @@ export default function StateSpace(props) {
 
   // drawPath: draws all past states still saved as constant-sized points
   function drawPath(p) {
+    if (pastStates.length === 0) return;
     const pastStatePoints = pastStates.map(
       state => getPoint([state[xVar], state[yVar]])
       ).filter(point => point != null);
     p.stroke(isDark ? 235 : 20);
     p.strokeWeight(1);
+    // let lastPoint = pastStatePoints[0];
     pastStatePoints.forEach(point => {
+      // causes weird behavior off the page
       p.point(...point);
+      // p.line(...lastPoint, ...point);
+      // lastPoint = point;
     })
   }
 

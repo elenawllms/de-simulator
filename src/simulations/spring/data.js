@@ -5,14 +5,14 @@ import info from './info.js';
 const stateVars = {
     // the time variable doesn't quite work in this data structure... but that's a later problem
     time: new StateVar('Time', 0, 100, 0, 's', 't', 'black', x=>x),
-    displacement: new StateVar('Displacement', -5, 5, 0, 'm', 'x', 'blue', x=>x),
-    velocity: new StateVar('Velocity', -10, 10, 0, 'm/s', '\\dot{x}', 'red', x=>x),
+    displacement: new StateVar('Displacement', -5, 5, 10, 'm', 'x', '#b95adb', x=>x),
+    velocity: new StateVar('Velocity', -10, 10, 0, 'm/s', '\\dot{x}', '#37b098', x=>x),
 }
 
 const parameters = {
     mass: new Parameter('Mass', 0.1, 2, 1, 'kg', 'm'),
     damping: new Parameter('Damping', 0, 1, 0.1, 'kg/s', 'b'),
-    stiffness: new Parameter('Spring Stiffness', 1, 10, 5, 'N/m', 'k')
+    stiffness: new Parameter('Spring Stiffness', 5, 20, 5, 'N/m', 'k')
 }
 
 const derivatives = {
@@ -31,8 +31,8 @@ const gridVariables = {
 }
 
 const stateSpaceProps = {
-    limits: {x: [-3.5, 3.5], y: [-10, 10]},
-    ticks: {x: 1, y: 3},
+    limits: {x: [-10, 10], y: [-20, 20]},
+    ticks: {x: 3, y: 5},
     origin: {x: 0, y: 0},
 }
 
@@ -44,9 +44,12 @@ const timeSeriesProps =  {
     yLimits: [-10, 10],
     yTicks: 3,
     vals: (state, parameters) => ([
-        {label: 'Displacement', value: state.displacement, color: "#a31733", units: "rad"},
-        {label: 'Velocity', value: state.velocity, color: "#38a317", units: "rad/s"},
-        {label: 'Acceleration', value: derivatives.velocity(state, parameters), color: "#d1650d", units: "rad/s^2"}
+        {label: 'Displacement', value: state.displacement, 
+            color: stateVars.displacement.color, units: stateVars.displacement.unit},
+        {label: 'Velocity', value: state.velocity, 
+            color: stateVars.velocity.color, units: stateVars.velocity.unit},
+        {label: 'Acceleration', value: derivatives.velocity(state, parameters), 
+            color: "#d1650d", units: "rad/s^2"}
     ])
 }
 

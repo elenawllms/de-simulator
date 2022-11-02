@@ -5,13 +5,13 @@ import info from './info.js';
 const stateVars = {
     // the time variable doesn't quite work in this data structure... but that's a later problem
     time: new StateVar('Time', 0, 100, 0, 's', 't', 'black', v=>v),
-    x: new StateVar('[X]', 0, 1, 0.5, 'M', 'x', 'hsl(320, 75%, 75%)', v=>v),
-    y: new StateVar('[Y]', 0, 1, 0.2, 'M', 'y', 'hsl(120, 55%, 65%)', v=>v)
+    x: new StateVar('[X]', 0, 1, 0.5, 'M', 'x', 'hsl(120, 75%, 75%)', v=>v),
+    y: new StateVar('[Y]', 0, 1, 0.2, 'M', 'y', 'hsl(320, 55%, 65%)', v=>v)
 }
-
+ 
 const parameters = {
-    a: new Parameter('a', 0.2, 1, 0.3, 'M/s', 'a'),
-    b: new Parameter('b', 0.2, 2, 0.8, 's^{-1}', 'b'),
+    a: new Parameter('a', 0.2, 1, 0.5, 'M/s', 'a'),
+    b: new Parameter('b', 0.2, 2, 1.5, 's^{-1}', 'b'),
 }
 
 const derivatives = {
@@ -76,7 +76,7 @@ const visualization = (state, parameters, theme) => <BrusselatorVis state={state
 
 
 export const BrusselatorData = {
-    title: "Spring",
+    title: "Brusselator",
     stateVars: stateVars,
     parameters: parameters,
     stateSpaceProps: stateSpaceProps,
