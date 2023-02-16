@@ -37,7 +37,8 @@ const stateSpaceProps = {
 }
 
 const energyDiagramProps = {
-    limits: {x: [-3.5, 3.5], y: [-10, 10], z: [-30, 50]}
+    limits: {x: [-3.5, 3.5], y: [-10, 10], z: [-30, 50]},
+    ticks: {x: 1, y: 3, z: 15}
 }
 
 const timeSeriesProps =  {

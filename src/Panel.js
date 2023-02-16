@@ -13,9 +13,11 @@ export default function Panel(props) {
 
   // keep track of the active tab
   const [activeTab, setActiveTab] = useState('State Space');
+
   // titles that go at the top of each tab
   let tabNames = ['Info', 'State Space', 'Energy Diagram', 'Time Series', 'Options'];
-  if (props.data.title === "Brusselator") {
+
+  if (props.data.title === "Brusselator") { // Brusselator has no energy diagram
     tabNames = [
       'Info', 'State Space', 'Time Series', 'Options'
     ]  
@@ -49,9 +51,10 @@ export default function Panel(props) {
       parameters={props.parameters}
       setParameters={props.setParameters}
       stateVars={props.data.stateVars}
-      parameterVars={props.data.parameters} // I am aware of how bad this is
+      parameterVars={props.data.parameters} // FIXIT: I am aware of how bad this is
       />,
 
+      // Energy tab
     <Energy 
       key='Energy Diagram' 
       label='Energy Diagram' 
@@ -63,6 +66,7 @@ export default function Panel(props) {
       gridProps={props.data.energyDiagramProps}
       stateVars={props.data.stateVars}/>,
 
+      // Time Series tab
     <Readout 
       key='Time Series' 
       label='Time Series' 
@@ -73,13 +77,19 @@ export default function Panel(props) {
       isDark={props.theme === 'dark'}
       gridProps={props.data.timeSeriesProps}
       />,
-    <Info key='Info' label='Info' state={props.state} info={props.data.info}/>
+      
+      // Info tab
+    <Info key='Info' 
+    label='Info' 
+    state={props.state} 
+    info={props.data.info}/>
   ]
 
   return (
     <div id="Panel">
         <div className='tabs'>
           <ol className='tab-list'>
+            {/* Create list of tabs */}
             {tabNames.map((label) => {
               return <li key={label} 
                           className={activeTab === label ? 'tab-list-active' : 'tab-list-inactive'}

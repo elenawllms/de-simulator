@@ -42,16 +42,15 @@ export default function Option(props) {
     return (
         <div className="option">
             <div className="option-banner">
-                <span className="option-name">{props.vars.displayName} (<span style={{fontSize: 13}}>
-                    <Latex>{`$${props.vars.symbol}$`}</Latex>
+                <span className="option-name">{props.vars.displayName} (<span style={{fontSize: 12}}>
+                    <Latex>{`$${props.vars.symbol}$`}</Latex> in <Latex>{`$${props.vars.unit}$`}</Latex> 
                     </span>)</span>
                 <span className="option-value">
                 <input type="number" onWheel={(e) => e.target.blur()}
                     value={value}
-                    size="small"
                     onChange={handleInputChange}
                     onBlur={handleBlur}
-                /> {props.vars.units}
+                />
                 </span>
             </div>
             

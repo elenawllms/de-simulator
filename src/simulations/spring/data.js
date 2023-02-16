@@ -37,12 +37,13 @@ const stateSpaceProps = {
 }
 
 const energyDiagramProps = {
-    limits: {x: [-3.5, 3.5], y: [-10, 10], z: [-30, 50]}
+    limits: {x: [-3.5, 3.5], y: [-10, 10], z: [-30, 100]},
+    ticks: {x: 1, y: 3, z: 20}
 }
 
 const timeSeriesProps =  {
-    yLimits: [-10, 10],
-    yTicks: 3,
+    yLimits: [-31, 31],
+    yTicks: 10,
     vals: (state, parameters) => ([
         {label: 'Displacement', value: state.displacement, 
             color: stateVars.displacement.color, units: stateVars.displacement.unit},

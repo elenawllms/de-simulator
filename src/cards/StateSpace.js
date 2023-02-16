@@ -245,6 +245,7 @@ export default function StateSpace(props) {
       // if not out of bounds of the grid, reset state and past states
       if (stateValues.x != null && stateValues.y != null) {
         const newState = {...props.state};
+        newState["time"] = 0;
         newState[xVar] = stateValues.x;
         newState[yVar] = stateValues.y;
         props.setState(newState);

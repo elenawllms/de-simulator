@@ -5,7 +5,7 @@ import info from './info.js';
 const stateVars = {
     // the time variable doesn't quite work in this data structure... but that's a later problem
     time: new StateVar('Time', 0, 100, 0, 's', 't', 'black', v=>v),
-    x: new StateVar('[X]', 0, 1, 0.5, 'M', 'x', 'hsl(120, 75%, 75%)', v=>v),
+    x: new StateVar('[X]', 0, 1, 0.5, 'M', 'x', 'hsl(150, 55%, 55%)', v=>v),
     y: new StateVar('[Y]', 0, 1, 0.2, 'M', 'y', 'hsl(320, 55%, 65%)', v=>v)
 }
  
@@ -36,13 +36,9 @@ const stateSpaceProps = {
     origin: {x: 0, y: 0},
 }
 
-const energyDiagramProps = {
-    limits: {x: [-3.5, 3.5], y: [-10, 10], z: [-30, 50]}
-}
-
 const timeSeriesProps =  {
-    yLimits: [0, 10],
-    yTicks: 2,
+    yLimits: [0, 6],
+    yTicks: 1,
     vals: (state, parameters) => ([
         {label: '[X]', value: state.x, color: stateVars.x.color, units: stateVars.x.unit},
         {label: '[Y]', value: state.y, color: stateVars.y.color, units: stateVars.y.unit},
@@ -84,7 +80,7 @@ export const BrusselatorData = {
     derivatives: derivatives,
     stepFn: step,
     energyFn: energyFn,
-    energyDiagramProps: energyDiagramProps,
+    energyDiagramProps: null,
     timeSeriesProps: timeSeriesProps,
     info: info,
     visualization: visualization

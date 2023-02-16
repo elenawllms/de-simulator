@@ -52,7 +52,7 @@ export default function Readout(props) {
   const drawAxes = p => {
     p.stroke(isDark ? 255 : 0);
     p.strokeWeight(0.2);
-    p.line(0, 0, -100, 0); // middle x-axis
+    p.line(0, scaleYValue(0), -100, scaleYValue(0)); // middle x-axis
     p.line(-100, 50, -100, -50); // y-axis at left
     p.line(-100, 50, 0, 50); // lower x-axis
 

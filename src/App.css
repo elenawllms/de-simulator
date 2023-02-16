@@ -356,6 +356,7 @@ a {
   width: 100%;
 }
 
+
 /* --- START CUSTOM SLIDER PROPERTIES --- might want to pull this into a separate file*/
 input[type=range] {
   height: 25px;
@@ -444,7 +445,6 @@ input[type=range]:focus::-ms-fill-upper {
   background: hsl(var(--theme-color-1), 50%);
 }
 /* --- END CUSTOM SLIDER PROPERTIES --- might want to pull this into a separate file*/
-
 
 
 /* ---- PAUSE/PLAY AND RESET BUTTONS ---- */
