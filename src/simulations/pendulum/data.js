@@ -21,7 +21,7 @@ const step = createStepFunction(stateVars, derivatives);
 
 const parameters = {
     length: new Parameter('Length', 0.5, 2, 1.5, 'm', 'l'),
-    damping: new Parameter('Damping', 0, 1, 0.1, '', '\\gamma'),
+    damping: new Parameter('Damping', 0, 1, 0.1, 'kg/s', 'c'),
     force: new Parameter('Force', 0, 1, 0, 'N', 'F'),
     forcingFrequency: new Parameter('Forcing Frequency', 0, 10, 1, 'Hz', '\\omega'),
 }
@@ -45,9 +45,9 @@ const timeSeriesProps =  {
     yLimits: [-10, 10],
     yTicks: 3,
     vals: (state, parameters) => ([
-        {label: 'Angle', value: state.angle, color: "#a31733", units: "rad"},
+        {label: 'Angle', value: state.angle, color: "#f54e42", units: "rad"},
         {label: 'Velocity', value: state.velocity, color: "#38a317", units: "rad/s"},
-        {label: 'Acceleration', value: derivatives.velocity(state, parameters), color: "#d1650d", units: "rad/s^2"}
+        {label: 'Acceleration', value: derivatives.velocity(state, parameters), color: "#4287f5", units: "rad/s^2"}
     ])
 }
 

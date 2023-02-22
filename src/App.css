@@ -60,6 +60,7 @@ Main * {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-radius: 10px;
 }
+
 /* 
 #Main .card img {
   width: 100%;
@@ -69,7 +70,6 @@ Main * {
 
 #Main .card .title {
   padding: 20px;
-  text-decoration: none;
   color: black;
   /* font-weight: 500; */
   padding-bottom: 0;
@@ -81,10 +81,12 @@ Main * {
   color: black;
 }
 
+#Main a {
+  text-decoration: none;
+}
 
 a {
-  text-decoration: none;
-  color: black;
+  color: inherit;
 }
 
 /* OTHER */
