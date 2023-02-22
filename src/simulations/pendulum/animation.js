@@ -6,6 +6,7 @@ const PRIMARY_COLOR = "#0091ff";
 
 export default function PendulumVis(props) {
   const state = props.state;
+  const parameters = props.parameters;
   const isDark = props.theme === 'dark';
 
   const getPixelVal = val => {
@@ -17,21 +18,20 @@ export default function PendulumVis(props) {
   const getPoint = point => [getX(point[0]), getY(point[1])];
   
 
-  const getCenter = () => [0, state.force * Math.cos(state.forcingFrequency * state.time)];
+  const getCenter = () => [0, parameters.force * Math.cos(parameters.forcingFrequency * state.time)];
 
   const drawPendulum = (p) => {
     const [centerX, centerY] = getPoint(getCenter());
-    const x = getX(state.length * Math.sin(state.angle)) + centerX;
-    const y = getY(-state.length * Math.cos(state.angle)) + centerY;
-    // console.log([x, y]);
+    const x = getX(parameters.length * Math.sin(state.angle)) + centerX;
+    const y = getY(-parameters.length * Math.cos(state.angle)) + centerY;
 
 
     p.stroke(isDark ? 50 : 200);
     p.strokeWeight(10);
-    p.line(0, getY(state.force), 0, -getY(state.force));
+    p.line(0, getY(parameters.force), 0, -getY(parameters.force));
     p.stroke(isDark ? 150 : 100);
     p.strokeWeight(3);
-    p.line(0, getY(state.force), 0, -getY(state.force));
+    p.line(0, getY(parameters.force), 0, -getY(parameters.force));
 
     // line
     p.stroke(isDark ? 255 : 0);

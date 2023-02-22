@@ -24,6 +24,7 @@ const TOTAL_CANVAS_SIZE = 130;
 
 
 export default function StateSpace(props) {
+  // default to comet style
   const [trailStyle, setTrailStyle] = useState('comet');
 
   // set constants based on states, theme, simulation data, etc
@@ -31,8 +32,10 @@ export default function StateSpace(props) {
   const pastStates = props.pastStates;
   const gridProps = props.gridProps;
   const isDark = props.isDark;
-  const xVar = gridProps.variables.x;
-  const yVar = gridProps.variables.y;
+  const xVar = props.gridVariables.x;
+  const yVar = props.gridVariables.y;
+  const parameters = props.parameters;
+  const stateVars = props.stateVars;
 
   // TODO: rename these helper functions
   // different for x and y in order to scale the y axis positively in the upward direction
@@ -105,9 +108,12 @@ export default function StateSpace(props) {
     newState[yVar] = yVal;
   
     // derivative calculations
-    const dx = props.derivatives[xVar](newState);
-    const dy = props.derivatives[yVar](newState);
-    const angle = Math.atan(dy/dx);
+    const xWindowSize = gridProps.limits.x[1] - gridProps.limits.x[0];
+    const yWindowSize = gridProps.limits.y[1] - gridProps.limits.y[0];
+
+    const dx = props.derivatives[xVar](newState, parameters);
+    const dy = props.derivatives[yVar](newState, parameters);
+    const angle = Math.atan((dy / yWindowSize)/(dx / xWindowSize));
     const del_x = 3 * Math.cos(angle);
     const del_y = -3 * Math.sin(angle);
     const [x, y] = getPoint([xVal, yVal]);
@@ -165,13 +171,18 @@ export default function StateSpace(props) {
 
   // drawPath: draws all past states still saved as constant-sized points
   function drawPath(p) {
+    if (pastStates.length === 0) return;
     const pastStatePoints = pastStates.map(
       state => getPoint([state[xVar], state[yVar]])
       ).filter(point => point != null);
     p.stroke(isDark ? 235 : 20);
     p.strokeWeight(1);
+    // let lastPoint = pastStatePoints[0];
     pastStatePoints.forEach(point => {
+      // causes weird behavior off the page
       p.point(...point);
+      // p.line(...lastPoint, ...point);
+      // lastPoint = point;
     })
   }
 
@@ -207,12 +218,12 @@ export default function StateSpace(props) {
     // x-axis label
     p.noStroke(0);
     p.textSize(9);
-    p.text(gridProps.labels.x, 0, 125);
+    p.text(stateVars[xVar].displayName, 0, 125);
 
     // y-axis label
     p.push();
     p.rotate(-p.HALF_PI);
-    p.text(gridProps.labels.y, 0, -120);
+    p.text(stateVars[yVar].displayName, 0, -120);
     p.pop();
   }
 
@@ -233,10 +244,14 @@ export default function StateSpace(props) {
 
       // if not out of bounds of the grid, reset state and past states
       if (stateValues.x != null && stateValues.y != null) {
-        state.time = 0;
-        state[gridProps.initialVariables.x] = stateValues.x;
-        state[gridProps.initialVariables.y] = stateValues.y;
-        props.setState(state);
+        const newState = {...props.state};
+        newState["time"] = 0;
+        newState[xVar] = stateValues.x;
+        newState[yVar] = stateValues.y;
+        props.setState(newState);
+        const newStateWithoutTime = {...newState};
+        delete newStateWithoutTime.time;
+        props.setInitialState(newStateWithoutTime);
         props.reset();
       }
     })
@@ -260,8 +275,8 @@ export default function StateSpace(props) {
         <Sketch setup={setup} draw={draw}></Sketch>
       </div>
       <div className='bottomRow'>
-        <BottomRowSpan label={gridProps.labels.x} value={state[xVar]} units={gridProps.units.x}/>
-        <BottomRowSpan label={gridProps.labels.y} value={state[yVar]} units={gridProps.units.y}/>
+        <BottomRowSpan label={stateVars[xVar].displayName} value={state[xVar]} units={stateVars[xVar].unit}/>
+        <BottomRowSpan label={stateVars[yVar].displayName} value={state[yVar]} units={stateVars[xVar].unit}/>
         <span>
           <button onClick={() => {setTrailStyle(trailStyle === 'comet' ? 'path' : 'comet')}}>
             {trailStyle === 'comet' ? 'Draw Path' : 'Draw Comet'}
