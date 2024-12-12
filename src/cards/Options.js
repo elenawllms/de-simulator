@@ -4,15 +4,24 @@ import Option from './Option.js'
 
 
 export default function Options(props) {
-  const options = props.options;
 
   return (
     <div id="Options">
-      {options.map(option => (<Option
-                  key={option.name} 
-                  state={props.state}
-                  option={option}
-                  setState={props.setState}
+      <h1>Constants</h1>
+      {Object.keys(props.parameters).map(name => (<Option
+                  key={name} 
+                  name={name}
+                  vars={props.parameterVars[name]}
+                  state={props.parameters}
+                  setState={props.setParameters}
+                 />))}
+      <h1>Initial Conditions</h1>
+      {Object.keys(props.initialState).map(name => (<Option
+                  key={name} 
+                  name={name}
+                  vars={props.stateVars[name]}
+                  state={props.initialState}
+                  setState={props.setInitialState}
                  />))}
     </div>
   )

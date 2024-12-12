@@ -3,7 +3,7 @@ import Sketch from 'react-p5';
 
 const axisPadding = 10;
 const xTickSize = 2;
-const timeWindow = 7;
+const timeWindow = 15;
 
 // gotta put this under constants at some point
 const interpolate = (val, lowerInitial, upperInitial, lowerFinal, upperFinal) => {
@@ -14,14 +14,15 @@ const interpolate = (val, lowerInitial, upperInitial, lowerFinal, upperFinal) =>
 export default function Readout(props) {
   // define a variable for literally every possible use so I don't have to reference props
   const state = props.state;
+  const parameters = props.parameters;
   const pastStates = props.pastStates;
   const currentTime = state.time < timeWindow ? timeWindow : state.time;
-  const vals = props.vals;
+  const vals = props.gridProps.vals;
   const isDark = props.isDark;
   const yLimits = props.gridProps.yLimits;
   const yTickSize = props.gridProps.yTicks;
 
-  const [valsToShow, setValsToShow] = useState(Object.fromEntries(vals(state).map(o => [o.label, true])));
+  const [valsToShow, setValsToShow] = useState(Object.fromEntries(vals(state, parameters).map(o => [o.label, true])));
 
   const scaleYValue = val => interpolate(val, yLimits[0], yLimits[1], 50, -50);
   const scaleTime = t => interpolate(t, currentTime, currentTime - timeWindow, 0, -100);
@@ -51,7 +52,7 @@ export default function Readout(props) {
   const drawAxes = p => {
     p.stroke(isDark ? 255 : 0);
     p.strokeWeight(0.2);
-    p.line(0, 0, -100, 0); // middle x-axis
+    p.line(0, scaleYValue(0), -100, scaleYValue(0)); // middle x-axis
     p.line(-100, 50, -100, -50); // y-axis at left
     p.line(-100, 50, 0, 50); // lower x-axis
 
@@ -95,12 +96,12 @@ export default function Readout(props) {
     // all the points
     p.strokeWeight(isDark ? 0.5 : 0.8);
     drawnStates.forEach(s => {
-      vals(s).forEach(o => drawState(p, s.time, o))
+      vals(s, parameters).forEach(o => drawState(p, s.time, o))
     })
     
     // big point for current state
     p.strokeWeight(isDark ? 1.5 : 2);
-    vals(state).forEach(o => drawState(p, state.time, o))
+    vals(state, parameters).forEach(o => drawState(p, state.time, o))
   }
 
   const setup = (p, canvasParentRef) => {
@@ -120,7 +121,7 @@ export default function Readout(props) {
         <Sketch setup={setup} draw={draw}></Sketch>
       </div>
       <div className='bottomRow'>
-        {vals(state).map(o => 
+        {vals(state, parameters).map(o => 
           <span style={{color: o.color, fontWeight: 900}} key={o.label}>
             <input type="checkbox" id={"show " + o.label} checked={valsToShow[o.label]} 
             onChange={() => {

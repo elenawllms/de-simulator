@@ -19,7 +19,7 @@
   --card-color: #1F1E27;
   --text-color: #eee;
   --line-color: #3b3b41;
-  --theme-color-1: 250, 70%;
+  --theme-color-1: 212, 70%;
 }
 
 
@@ -31,12 +31,18 @@
 /* ----- MAIN HOMEPAGE ----- */
 
 #Main {
+  min-height: 100vh;
   height: 100%;
   margin: 0;
   padding: 80px 100px;
   width: 100%;
   background: white;
+  color: black;
   align-content: center;
+}
+
+Main * {
+  color: inherit;
 }
 
 #Main h1, h2 {
@@ -55,20 +61,32 @@
   border-radius: 10px;
 }
 
+/* 
 #Main .card img {
   width: 100%;
   border-radius: 10px 10px 0 0;
 
+} */
+
+#Main .card .title {
+  padding: 20px;
+  color: black;
+  /* font-weight: 500; */
+  padding-bottom: 0;
 }
 
 #Main .card .desc {
   padding: 20px;
-  text-decoration: none;
+  padding-top: 0;
   color: black;
 }
 
-a {
+#Main a {
   text-decoration: none;
+}
+
+a {
+  color: inherit;
 }
 
 /* OTHER */
@@ -274,13 +292,19 @@ a {
   width: 100%;
   /* padding: 10px 20px; */
   font-size: 100%;
-  text-align: center;
+  /* text-align: center; */
   height: 100%;
   overflow-y: scroll;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr; */
   gap: 1px;
-  background: var(--line-color);
+  /* background: var(--line-color); */
+}
+
+#Options h1 {
+  text-align: left;
+  margin: 20px;
+  font-size: 24px;
 }
 
 .option {
@@ -333,6 +357,7 @@ a {
 .option input[type="range"] {
   width: 100%;
 }
+
 
 /* --- START CUSTOM SLIDER PROPERTIES --- might want to pull this into a separate file*/
 input[type=range] {
@@ -422,7 +447,6 @@ input[type=range]:focus::-ms-fill-upper {
   background: hsl(var(--theme-color-1), 50%);
 }
 /* --- END CUSTOM SLIDER PROPERTIES --- might want to pull this into a separate file*/
-
 
 
 /* ---- PAUSE/PLAY AND RESET BUTTONS ---- */
