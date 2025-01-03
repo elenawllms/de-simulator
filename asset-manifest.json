@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/de-simulator/static/css/main.0d947238.css",
-    "main.js": "/de-simulator/static/js/main.6ecfc07d.js",
+    "main.js": "/de-simulator/static/js/main.b63bfacc.js",
     "static/media/Alegreya-VariableFont_wght.ttf": "/de-simulator/static/media/Alegreya-VariableFont_wght.05ee9b745e0a15fa5d75.ttf",
     "index.html": "/de-simulator/index.html",
     "main.0d947238.css.map": "/de-simulator/static/css/main.0d947238.css.map",
-    "main.6ecfc07d.js.map": "/de-simulator/static/js/main.6ecfc07d.js.map"
+    "main.b63bfacc.js.map": "/de-simulator/static/js/main.b63bfacc.js.map"
   },
   "entrypoints": [
     "static/css/main.0d947238.css",
-    "static/js/main.6ecfc07d.js"
+    "static/js/main.b63bfacc.js"
   ]
 }
