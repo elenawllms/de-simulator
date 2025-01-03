@@ -9,7 +9,7 @@
 import './App.css';
 import Simulation from './Simulation.js';
 import {useState, useEffect} from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { PendulumData } from './simulations/pendulum/data';
 import { SpringData } from './simulations/spring/data';
 import { BrusselatorData } from './simulations/brusselator/data';
@@ -39,7 +39,7 @@ function App() {
 
   return (
     <div id="App" data-theme={theme}>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
         {/* Home page */}
         <Route path="/" element={<Main switchTheme={switchTheme} theme={theme} />} />
@@ -50,7 +50,7 @@ function App() {
           {/* Brusselator simulation */}
           <Route path="/brusselator" element={<Simulation switchTheme={switchTheme} theme={theme} data={BrusselatorData}/>} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
       
       
     </div>
