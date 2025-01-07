@@ -1,6 +1,7 @@
 /* 
-* SIMULATION: Component controlling layout for site. All dependent
-* components should be generalizable given the appropriate data file.
+* Simulation.js
+* Component controlling layout for site. All dependent components can be simulated 
+* this way given the appropriate data.js file.
 * 
 */
 
@@ -11,14 +12,14 @@ import Panel from './Panel.js';
 export default function Simulation(props) {
 
   // set initial state of simulation system
-  const [state, setState] = useState(Object.fromEntries(Object.entries(props.data.stateVars).map(([key, value]) => [key, value.defaultValue]))); // TODO: there has to be a better way to do this
+  const [state, setState] = useState(Object.fromEntries(Object.entries(props.data.stateVars).map(([key, value]) => [key, value.defaultValue])));
 
   // set initialState variable
   const stateWithoutTime = {...state};
   delete stateWithoutTime.time;
   const [initialState, setInitialState] = useState(stateWithoutTime);
   // set parameters of system
-  const [parameters, setParameters] = useState(Object.fromEntries(Object.entries(props.data.parameters).map(([key, value]) => [key, value.defaultValue]))) // TODO: again, there has to be a better way to do this
+  const [parameters, setParameters] = useState(Object.fromEntries(Object.entries(props.data.parameters).map(([key, value]) => [key, value.defaultValue])))
   // eslint-disable-next-line
   const [pastStates, setPastStates] = useState([]);
   const [clock, setClock] = useState(0);

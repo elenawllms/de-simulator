@@ -1,3 +1,5 @@
+/* This file contains the CSS for the entire application. */
+
 
 * {
   box-sizing: border-box;
@@ -159,7 +161,7 @@ a {
   height: 20px;
 }
 
-/* ---- SIZING OF STAGE AND COMPONENTS -- WILL NEED TO EDIT FOR MOBILE! ---- */
+/* ---- SIZING OF STAGE AND COMPONENTS ---- */
 .Stage {
   display: grid;
   gap: 1px;

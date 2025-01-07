@@ -42,17 +42,9 @@ const timeSeriesProps =  {
     vals: (state, parameters) => ([
         {label: '[X]', value: state.x, color: stateVars.x.color, units: stateVars.x.unit},
         {label: '[Y]', value: state.y, color: stateVars.y.color, units: stateVars.y.unit},
-        // {label: 'Acceleration', value: derivatives.velocity(state, parameters), color: "#d1650d", units: "rad/s^2"}
     ])
 }
 
-/**
- * Finds the energy of the system as a function of the current state and
- * the constants of the system.
- * @param {Object} state - current state as object including time
- * @param {Object} parameters - current constants of the system
- * @returns energy value, usually in Joules, of the current state of the system
- */
 const energyFn = (state, parameters) => (
     0
 );

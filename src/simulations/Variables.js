@@ -1,5 +1,12 @@
+/**
+ * @module Variables
+ * @fileoverview Creates the Parameter and StateVar classes and the createStepFunction 
+ * function, which contain information about each simulation's variables.
+ */
+
 import { rk4 } from '../constants.js';
 
+// Define the step size (important!)
 const h = 0.01;
 
 class Parameter {
@@ -19,7 +26,7 @@ class Parameter {
 
 class StateVar extends Parameter {
     /**
-     * 
+     * A state variable is a Parameter which can be displayed (in a TimeSeries, for instance).
      * @param {string} color 
      * @param {object => number} derivative 
      * @param {string} displayName

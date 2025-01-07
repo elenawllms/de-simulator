@@ -25,7 +25,7 @@ function App() {
   const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const [theme, setTheme] = useState(localStorage.getItem(COLOR_SCHEME_KEY, defaultDark ? 'dark' : 'light'));
 
-  // create a function to change the theme
+  // change the theme
   const switchTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
@@ -36,7 +36,7 @@ function App() {
     {localStorage.setItem(COLOR_SCHEME_KEY, theme);}
   , [theme])
 
-
+  // Use HashRouter — this is necessary for GitHub Pages deployment
   return (
     <div id="App" data-theme={theme}>
       <HashRouter>

@@ -1,3 +1,8 @@
+/**
+ * @module constants
+ * @fileoverview This file contains the constants and utility functions used in the simulation.
+ */
+
 export const HEADING_SIZE = '50px';
 export const CANVAS_RES_FACTOR = 4;
 
@@ -33,6 +38,7 @@ export const drawLine = (ctx, x1, x2, y1, y2) => {
     ctx.stroke();
 }
 
+// rk4: Implements the Runge-Kutta 4th order method
 export const rk4 = (initialState, parameters, derivatives, stateVars, h) => {
     const kList = Array(4).fill().map(()=> {return {}});
     const stateVarIncrementors = [v => 0, v => kList[0][v]*h/2, v => kList[1][v]*h/2, v => kList[2][v]*h];
